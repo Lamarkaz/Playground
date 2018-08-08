@@ -23,7 +23,7 @@ password = ["node.pwds"]
 interface = "all"
 port = 8540
 # Allows Cross-Origin Requests from domain 'playground.lamarkaz.com.
-cors = ["playground.lamarkaz.com"]
+cors = ["*"]
 # Only selected APIs will be exposed over this interface.
 apis = ["web3", "eth", "pubsub", "net", "private", "parity_pubsub", "traces", "rpc", "shh", "shh_pubsub"]
 
@@ -32,7 +32,7 @@ apis = ["web3", "eth", "pubsub", "net", "private", "parity_pubsub", "traces", "r
 interface = "all"
 port = 8450
 # Allows connecting from Origin 'parity://*,chrome-extension://*,moz-extension://*,https://*,wss://*'.
-origins = ["parity://*", "chrome-extension://*", "moz-extension://*", "https://*", "wss://*"]
+origins = ["*"]
 # Only selected APIs will be exposed over this interface.
 apis = ["web3", "eth", "pubsub", "net", "parity_pubsub", "private", "traces", "rpc", "shh", "shh_pubsub"]
 
