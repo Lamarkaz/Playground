@@ -1,10 +1,7 @@
-# This config should be placed in following path:
-#   ~/.local/share/io.parity.ethereum/config.toml
-
 [parity]
 # Custom chain
 chain = "Playground.json"
-base_path = "/tmp/playground"
+base_path = "./node"
 # Auto-updates to every release
 auto_update = "all"
 # Stable
@@ -42,7 +39,7 @@ disable = true
 
 [mining]
 # Account to sign consensus messages and issue blocks for non-PoW chains.
-engine_signer = "0xa5ecda7393f1ebb20a8b5dfd99c6b0ef5652a98d"
+engine_signer = "0xbf7914020229016b03983d0b25e8f5a36b54c059"
 # You will be paid $0 for a basic transaction - Minimum gas price will be set accordingly.
 usd_per_tx = "0"
 # Targeting 10000000 gas per block when sealing a new block.
