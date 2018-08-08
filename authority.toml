@@ -3,11 +3,15 @@
 
 [parity]
 # Custom chain
-chain = "Playground"
+chain = "Playground.json"
+base_path = "/tmp/playground"
 # Auto-updates to every release
 auto_update = "all"
 # Stable
 release_track = "stable"
+
+[network]
+port = 30300
 
 [account]
 # Disables hardware wallet support.
@@ -16,6 +20,7 @@ disable_hardware = true
 [rpc]
 #  JSON-RPC will be listening for connections on IP all.
 interface = "all"
+port = 8540
 # Allows Cross-Origin Requests from domain 'playground.lamarkaz.com.
 cors = ["playground.lamarkaz.com"]
 # Only selected APIs will be exposed over this interface.
@@ -24,6 +29,7 @@ apis = ["web3", "eth", "pubsub", "net", "private", "parity_pubsub", "traces", "r
 [websockets]
 #  JSON-RPC will be listening for connections on IP all.
 interface = "all"
+port = 8450
 # Allows connecting from Origin 'parity://*,chrome-extension://*,moz-extension://*,https://*,wss://*'.
 origins = ["parity://*", "chrome-extension://*", "moz-extension://*", "https://*", "wss://*"]
 # Only selected APIs will be exposed over this interface.
