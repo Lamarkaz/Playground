@@ -16,6 +16,7 @@ port = 30300
 [account]
 # Disables hardware wallet support.
 disable_hardware = true
+password = ["node.pwds"]
 
 [rpc]
 #  JSON-RPC will be listening for connections on IP all.
