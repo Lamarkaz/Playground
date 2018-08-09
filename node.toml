@@ -4,38 +4,22 @@ chain = "Playground.json"
 base_path = "./node"
 # Auto-updates to every release
 auto_update = "all"
-# Stable
+# Beta
 release_track = "beta"
 
 [network]
 port = 30300
 
-[account]
-# Disables hardware wallet support.
-disable_hardware = true
-password = ["node.pwds"]
-
 [rpc]
-interface = "all"
 port = 8540
-cors = ["*"]
+# Only selected APIs will be exposed over this interface.
 apis = ["web3", "eth", "pubsub", "net", "private", "parity_pubsub", "traces", "rpc", "shh", "shh_pubsub", "parity"]
 
 [websockets]
-interface = "all"
 port = 8450
-origins = ["*"]
+# Only selected APIs will be exposed over this interface.
 apis = ["web3", "eth", "pubsub", "net", "parity_pubsub", "private", "traces", "rpc", "shh", "shh_pubsub", "parity"]
 
 [secretstore]
+# You won't be able to encrypt and decrypt secrets.
 disable = true
-
-[mining]
-engine_signer = "0xbf7914020229016b03983d0b25e8f5a36b54c059"
-gas_floor_target = "10000000"
-gas_cap = "10000000"
-
-[footprint]
-tracing = "on"
-pruning = "archive"
-fat_db = "on"

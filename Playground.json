@@ -1,5 +1,8 @@
 {
     "name": "Playground",
+    "nodes": [
+        "enode://9282ea6b96ffce3a1b673e90f5428f84c8eec701414272f2b013d06178680766b8094a33d2186187b4aef7b678c5fe646e4c1e4b4f95603e84d520ce10c13c57@playground.lamarkaz.com:30300"
+    ],
     "engine": {
         "authorityRound": {
             "params": {
