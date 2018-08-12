@@ -34,6 +34,7 @@ disable = true
 engine_signer = "0xbf7914020229016b03983d0b25e8f5a36b54c059"
 gas_floor_target = "10000000"
 gas_cap = "10000000"
+min_gas_price = 0
 
 [footprint]
 tracing = "on"
