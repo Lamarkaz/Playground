@@ -1,8 +1,21 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="$store.state.wallet === {}"/>
+    <Auth v-else/>
   </div>
 </template>
+
+<script>
+import Auth from "./components/Auth.vue";
+export default {
+  components: {
+    Auth
+  },
+  created () {
+    this.dispatch("bootstrap");
+  }
+}
+</script>
 
 <style>
 #app {
