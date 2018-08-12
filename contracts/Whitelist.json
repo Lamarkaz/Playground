@@ -239,12 +239,12 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "user",
 				"type": "address"
 			},
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "name",
 				"type": "string"
 			}
@@ -256,12 +256,12 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "user",
 				"type": "address"
 			},
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "name",
 				"type": "string"
 			}
@@ -273,7 +273,7 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "user",
 				"type": "address"
 			},

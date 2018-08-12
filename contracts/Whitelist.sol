@@ -43,9 +43,9 @@ contract Whitelist {
     mapping (address => User) public whitelist;
     mapping (string => address) names;
     
-    event Whitelisted(address indexed user, string indexed name);
-    event UnWhitelisted(address indexed user, string indexed name);
-    event Renamed(address indexed user, string oldName, string newName);
+    event Whitelisted(address user, string name);
+    event UnWhitelisted(address user, string name);
+    event Renamed(address user, string oldName, string newName);
     
     function add(address user, string name) public onlyOwner returns (bool) {
         require(whitelist[user].whitelisted == false);
