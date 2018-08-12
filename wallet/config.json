@@ -1,0 +1,7 @@
+{
+    "URL":"http://localhost:3000",
+    "RPC":"ws://playground.lamarkaz.com:8450",
+    "tokenGeneratorContract":"0x0000000000000000000000000000000000000006",
+    "whitelistContract":"0x0000000000000000000000000000000000000005",
+    "port": 3000
+}

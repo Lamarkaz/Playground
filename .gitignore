@@ -1,2 +1,4 @@
 node.pwds
 node
+backend/data.db
+secrets.json
