@@ -66,8 +66,8 @@ contract TokenGenerator {
     
     mapping (bytes32 => Token) public tokens;
 
-    event Transfer(string indexed symbol, address indexed sender, address indexed recipient, uint value);
-    event NewToken(string indexed symbol, string name, uint8 decimals, uint totalSupply, address indexed generator);
+    event Transfer(string symbol, address indexed sender, address indexed recipient, uint value);
+    event NewToken(string symbol, string name, uint8 decimals, uint totalSupply, address indexed generator);
 
     function balanceOf(string _token, address _owner) public view returns (uint256) {
         return tokens[keccak256(_token)].balances[_owner];

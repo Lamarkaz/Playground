@@ -154,7 +154,7 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "symbol",
 				"type": "string"
 			},
@@ -181,7 +181,7 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
+				"indexed": false,
 				"name": "symbol",
 				"type": "string"
 			},
