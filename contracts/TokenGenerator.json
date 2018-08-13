@@ -116,20 +116,55 @@
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "symbol",
+				"type": "string"
+			}
+		],
+		"name": "getToken",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "decimals",
+				"type": "uint8"
+			},
+			{
+				"name": "totalSupply",
+				"type": "uint256"
+			},
+			{
+				"name": "generator",
+				"type": "address"
+			},
+			{
+				"name": "balance",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
+				"indexed": true,
 				"name": "symbol",
 				"type": "string"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"name": "sender",
 				"type": "address"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"name": "recipient",
 				"type": "address"
 			},
@@ -146,7 +181,7 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
+				"indexed": true,
 				"name": "symbol",
 				"type": "string"
 			},
@@ -166,7 +201,7 @@
 				"type": "uint256"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"name": "generator",
 				"type": "address"
 			}

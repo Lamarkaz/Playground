@@ -1,6 +1,13 @@
 <template>
   <div id="app">
-    <router-view v-if="$store.state.wallet === {}"/>
+    <v-container v-if="typeof $store.state.wallet.address != 'undefined'">
+      {{$store.state.wallet.name}}
+      <br>
+      {{$store.state.wallet.address}}
+      <br>
+      <v-btn @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout')">Logout</v-btn>
+      <router-view/>
+    </v-container>
     <Auth v-else/>
   </div>
 </template>
@@ -11,10 +18,13 @@ export default {
   components: {
     Auth
   },
-  created () {
-    this.dispatch("bootstrap");
+  created() {
+    var self = this;
+    window.onload = function(){
+      self.$store.dispatch("bootstrap");
+    }
   }
-}
+};
 </script>
 
 <style>

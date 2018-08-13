@@ -1,7 +1,16 @@
 <template>
     <v-layout class="authLayout">
         <v-container v-if="generated">
-            DOWNLOAD
+            You are almost done!
+
+            Just a few more steps:
+
+            1. Download identity file on your device. Make sure you keep a few backups. Without this device, you won't be able to access your account.
+            <v-btn @click="download">Download</v-btn>
+            <br>
+            2. Send an email to contact@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.
+            <br>
+            3. Wait for an email response then come back to this webpage to login.
         </v-container>
         <v-container v-else class="authOverlay">
             <v-flex style="margin-left: auto; margin-right: auto; margin-top: 35px; max-width: 530px">
@@ -127,16 +136,17 @@
 
 
 <script>
-import ethers from 'ethers'
+import ethers from "ethers";
+import { saveAs } from "file-saver/FileSaver";
 
-export default{
+export default {
   props: {
     value: {
       type: [Array, String]
     },
     label: {
       type: String,
-      default: 'Select an identity file..'
+      default: "Select an identity file.."
     },
     required: {
       type: Boolean,
@@ -151,135 +161,164 @@ export default{
       default: false
     }
   },
-  data () {
+  data() {
     return {
-      filename: '',
+      filename: "",
       passBol: true,
       newPassBol: true,
       confPassBol: true,
-      password: '',
-      newPassword: '',
-      confPassword: '',
+      password: "",
+      newPassword: "",
+      confPassword: "",
       json: {},
       ready: true,
       error: false,
       dialog: false,
-      pw: '',
-      confirmpw: '',
+      pw: "",
+      confirmpw: "",
       loader: false,
       tempWallet: {},
-      generated:false
-    }
+      generated: false
+    };
   },
   watch: {
-    value (v) {
-      this.filename = v
+    value(v) {
+      this.filename = v;
     }
   },
-  mounted () {
-    this.filename = this.value
+  mounted() {
+    this.filename = this.value;
   },
   methods: {
-    onFocus () {
+    onFocus() {
       if (!this.disabled) {
-        this.$refs.fileInput.click()
+        this.$refs.fileInput.click();
       }
     },
-    onFileChange ($event) {
-      const files = $event.target.files || $event.dataTransfer.files
-      var reader = new FileReader()
-      reader.readAsText(files[0], 'UTF-8')
-      var self = this
-      reader.onload = (function (file) {
-        return function (e) {
-          function tryParseJSON (jsonString) {
+    onFileChange($event) {
+      const files = $event.target.files || $event.dataTransfer.files;
+      var reader = new FileReader();
+      reader.readAsText(files[0], "UTF-8");
+      var self = this;
+      reader.onload = (function(file) {
+        return function(e) {
+          function tryParseJSON(jsonString) {
             try {
-              var o = JSON.parse(jsonString)
-              if (o && typeof o === 'object') {
-                return o
+              var o = JSON.parse(jsonString);
+              if (o && typeof o === "object") {
+                return o;
               }
-            } catch (e) { }
-            return false
+            } catch (e) {}
+            return false;
           }
-          if (tryParseJSON(e.target.result) !== false) {
-            self.json = e.target.result
+          if (
+            tryParseJSON(e.target.result) !== false &&
+            typeof tryParseJSON(e.target.result.address) != "undefined"
+          ) {
+            self.json = e.target.result;
             if (files) {
               if (files.length > 0) {
-                self.filename = [...files].map(file => file.name).join(', ')
+                self.filename = [...files].map(file => file.name).join(", ");
               } else {
-                self.filename = null
+                self.filename = null;
               }
             } else {
-              self.filename = $event.target.value.split('\\').pop()
+              self.filename = $event.target.value.split("\\").pop();
             }
           } else {
-            alert('Error: Invalid wallet file')
+            alert("Error: Invalid wallet file");
           }
-        }
-      })(files[0])
+        };
+      })(files[0]);
     },
-    authenticate () {
-      var self = this
-      this.ready = false
-      ethers.Wallet.fromEncryptedWallet(this.json, this.password).then(function (wallet) {
-        self.$store.dispatch('login', JSON.parse(self.json))
-      }).catch(function (e) {
-        alert(e)
-      })
-      this.ready = true
+    authenticate() {
+      var self = this;
+      this.ready = false;
+      this.$whitelistContract.methods
+        .isWhitelisted("0x" + JSON.parse(this.json).address)
+        .call()
+        .then(function(result) {
+          if (result === true) {
+            ethers.Wallet.fromEncryptedWallet(self.json, self.password)
+              .then(function(wallet) {
+                self.$web3.eth.accounts.wallet.add(wallet);
+                self.$store.dispatch("login", wallet);
+              })
+              .catch(function(e) {
+                alert(e);
+              });
+            self.ready = true;
+          } else {
+            self.ready = true;
+            alert(
+              "Your address is not yet whitelisted. Please send your address (" +
+                "0x" +
+                JSON.parse(self.json).address +
+                ") to contact@lamarkaz.com along with your name and organization."
+            );
+          }
+        });
     },
-    generate: function () {
-      var self = this
-      this.ready = false
-      this.loader = true
-      var wallet = ethers.Wallet.createRandom()
-      var encrypted = wallet.encrypt(this.pw, function (pc) {
+    generate: function() {
+      var self = this;
+      this.ready = false;
+      this.loader = true;
+      var wallet = ethers.Wallet.createRandom();
+      var encrypted = wallet.encrypt(this.pw, function(pc) {
         if (pc === 1) {
-          encrypted.then(function (json) {
-              self.dialog = false;
+          encrypted.then(function(json) {
+            self.dialog = false;
             self.generated = true;
-            self.tempWallet = JSON.parse(json)
-          })
+            self.tempWallet = JSON.parse(json);
+          });
         }
-      })
+      });
+    },
+    download: function() {
+      var blob = new Blob([JSON.stringify(this.tempWallet)], {
+        type: "text/plain;charset=utf-8"
+      });
+      saveAs(blob, "Identity.json");
     }
   },
   computed: {
-    valid: function () {
-      return (this.json !== '' && this.password.length > 7)
+    valid: function() {
+      return this.json !== "" && this.password.length > 7;
     },
-    pw_progress () {
-      return Math.min(100, this.pw.length * 10)
+    pw_progress() {
+      return Math.min(100, this.pw.length * 10);
     },
-    confirmpw_progress () {
-      return Math.min(100, this.confirmpw.length * 10)
+    confirmpw_progress() {
+      return Math.min(100, this.confirmpw.length * 10);
     },
-    pw_color () {
-      return ['error', 'warning', 'success'][Math.floor(this.pw_progress / 40)]
+    pw_color() {
+      return ["error", "warning", "success"][Math.floor(this.pw_progress / 40)];
     },
-    confirmpw_color () {
-      return ['error', 'warning', 'success'][Math.floor(this.confirmpw_progress / 40)]
+    confirmpw_color() {
+      return ["error", "warning", "success"][
+        Math.floor(this.confirmpw_progress / 40)
+      ];
     }
   }
-}
+};
 </script>
 
 
 <style scoped>
 .authOverlay {
-    background: #222;
-    max-width:100%;
-    width: 100%;
-    height: 100%;
+  background: #222;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 .mainAuth {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
 }
-input[type=file] {
-    position: absolute;
-    left: -99999px;
+input[type="file"] {
+  position: absolute;
+  left: -99999px;
 }
 .authCard {
   width: 100%;
@@ -312,7 +351,7 @@ input[type=file] {
   border-radius: 999px;
   font-size: 15px;
   font-weight: 700;
-  font-family: 'Dosis', sans-serif !important;
+  font-family: "Dosis", sans-serif !important;
 }
 .pulse {
   display: inline-block;
@@ -339,7 +378,7 @@ input[type=file] {
   padding: 15px;
 }
 .genBtn {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Dosis", sans-serif;
   font-weight: 700;
   font-size: 16px;
   padding-left: 10px;
@@ -351,12 +390,15 @@ input[type=file] {
   margin-top: 10px;
   margin-bottom: 15px;
   padding-left: 10px;
-  font-family: 'Dosis';
-  color: #FF4151;
+  font-family: "Dosis";
+  color: #ff4151;
   font-weight: 500;
   font-size: 15px;
 }
-.application .theme--light.input-group input, .application .theme--light.input-group textarea, .theme--light .input-group input, .theme--light .input-group textarea {
+.application .theme--light.input-group input,
+.application .theme--light.input-group textarea,
+.theme--light .input-group input,
+.theme--light .input-group textarea {
   color: white;
   margin-bottom: 11px;
 }
