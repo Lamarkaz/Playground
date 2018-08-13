@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./components/Home.vue";
-import Token from "./components/Home.vue";
+import Token from "./components/Token.vue";
 
 Vue.use(Router);
 
