@@ -17,13 +17,13 @@
                     ></v-text-field>
                     <v-text-field
                     v-model="symbol"
-                    @input="symbol = symbol.toUpperCase()"
+                    @input="upperAndValidate"
                     :rules="symbolRules"
                     :counter="3"
                     label="Token Symbol"
                     required
                     ></v-text-field>
-                    <p style="color:red" v-if="unavailableSymbol">This token symbol is unavailable. Please try another.</p>
+                    <p style="color:red" v-if="unavailable">This token symbol is unavailable. Please try another.</p>
                     <v-text-field
                     v-model="decimals"
                     :rules="decimalRules"
@@ -39,7 +39,8 @@
                     required
                     ></v-text-field>
                     <v-btn
-                    :disabled="!valid || unavailableSymbol"
+                    :disabled="!valid || unavailable"
+                    :loading="loading"
                     @click="submit"
                     >
                     Create
@@ -58,10 +59,12 @@ import { BigNumber } from "bignumber.js";
 export default {
   data: () => ({
     success: false,
+    loading:false,
     failure: false,
     valid: true,
     name: "Example Coin",
     symbol: "",
+    unavailable:false,
     supply: '1000000',
     decimals: '18',
     nameRules: [
@@ -91,27 +94,38 @@ export default {
   }),
   methods: {
     submit() {
+      this.loading = true;
       var self = this;
       if (this.$refs.form.validate()) {
-          console.log(new BigNumber(this.supply).times(10 ** this.decimals).toString(10))
-          this.$contract.methods.generate(this.symbol, this.name, this.decimals, new BigNumber(this.supply).times(10 ** this.decimals).toString(10)).send({from:this.$store.state.wallet.address, gasPrice:0, gas:4000000}, function(err, result){
-              if(!err){
-                self.clear();
-                self.success = true;
-              }else{
-                  self.failure = true;
-              }
-
+          var generate = this.$contract.methods.generate(this.symbol, this.name, this.decimals, new BigNumber(this.supply).times(10 ** this.decimals)).send({from:this.$store.state.wallet.address, gasPrice:0, gas:4000000});
+          generate.on("receipt", function(){
+            self.clear();
+            self.success = true;
+            self.failure = false;
+            self.loading = false;
+          })
+          generate.on("error", function(){
+            self.failure = true;
+            self.success = false;
+            self.loading = false;
           })
       }
     },
     clear() {
       this.$refs.form.reset();
-    }
-  },
-  computed: {
-    unavailableSymbol: function() {
-      return typeof this.$store.state.tokens[this.symbol] != "undefined";
+    },
+    upperAndValidate: function() {
+      if(this.symbol) {
+        this.symbol = this.symbol.toUpperCase()
+      }
+      var self = this;
+      this.$contract.methods.getToken(this.symbol.toUpperCase()).call().then(function(result){
+        if(result.totalSupply === "0") {
+          self.unavailable = false;
+        }else{
+          self.unavailable = true;
+        }
+      })
     }
   }
 };

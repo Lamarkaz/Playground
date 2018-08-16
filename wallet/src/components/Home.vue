@@ -2,7 +2,7 @@
   <div>
     <Create/>
     <ul>
-      <li v-if="item.balance" v-for="item in tokens" :key="item.symbol">
+      <li v-if="item.balance && item.balance > 0" v-for="item in orderedTokens" :key="item.symbol">
         <a :href="tokenUrl(item.symbol)">Token Name: {{item.name}}</a>
         <br>
         Balance: {{realBalance(item.balance, item.decimals)}} {{item.symbol}}
@@ -16,6 +16,7 @@
 <script>
 import Create from "./Create.vue";
 import { BigNumber } from "bignumber.js";
+import orderBy from 'lodash.orderby';
 
 export default {
   name: "home",
@@ -31,6 +32,11 @@ export default {
     realBalance: function(balance, decimals) {
       return new BigNumber(balance).div(10 ** decimals).toString(10);
     }
+  },
+  computed: {
+      orderedTokens: function () {
+          return orderBy(this.tokens, ['balance'], ['desc', 'asc'])
+      }
   },
   components: {
     Create
