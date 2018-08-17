@@ -33,7 +33,7 @@
                         loading
                         required
                         ></v-text-field>
-                        <input type="file" :multiple="false" :disabled="disabled" ref="fileInput" @change="onFileChange"></input>
+                        <input type="file" :multiple="false" :disabled="disabled" ref="fileInput" @change="onFileChange"/>
                         <v-text-field class="inputStyle"
                             v-model="password"
                             prepend-icon="lock" single-line
@@ -185,6 +185,12 @@ export default {
   mounted() {
     this.filename = this.value;
   },
+  created () {
+    var wallet = this.$localStorage.get('wallet', null);
+    if (wallet != null) {
+      this.$store.dispatch('login', wallet);
+    }
+  },
   methods: {
     onFocus() {
       if (!this.disabled) {
@@ -204,7 +210,9 @@ export default {
               if (o && typeof o === "object") {
                 return o;
               }
-            } catch (e) {}
+            } catch (e) {
+                return false;
+            }
             return false;
           }
           if (
@@ -238,6 +246,7 @@ export default {
             ethers.Wallet.fromEncryptedWallet(self.json, self.password)
               .then(function(wallet) {
                 self.$web3.eth.accounts.wallet.add(wallet);
+                self.$localStorage.set('wallet', wallet);
                 self.$store.dispatch("login", wallet);
               })
               .catch(function(e) {
