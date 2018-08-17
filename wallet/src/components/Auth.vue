@@ -13,7 +13,7 @@
             3. Wait for an email response then come back to this webpage to login.
         </v-container>
         <v-container v-else class="authOverlay">
-            <v-flex style="margin-left: auto; margin-right: auto; margin-top: 35px; max-width: 530px">
+            <v-flex style="margin-left: auto; margin-right: auto; margin-top: 35px; max-width: 450px">
                 <v-card class="authCard">
                     <v-alert v-if="error" color="error" icon="warning" value="true" style="margin-top: -45px">
                     Error: please make sure you upload a valid identity file and enter the correct decryption password
@@ -30,7 +30,6 @@
                         :rules="[v => !!v || 'Identity file is required!']"
                         ref="fileTextField"
                         color="purple darken-3"
-                        dark
                         loading
                         required
                         ></v-text-field>
@@ -47,15 +46,14 @@
                             :type="passBol ? 'password' : 'text'"
                             color="purple darken-3"
                             counter
-                            dark
                             required
                         ></v-text-field>
-                        <v-btn :disabled="!valid" class="authBtn" style="background-color: #cecece" v-on:click="authenticate">
+                        <v-btn :disabled="!valid" class="authBtn" color="grey" style="width: 60%" v-on:click="authenticate">
                             <v-icon style="font-size: 20px; padding-right: 10px;">vpn_key</v-icon>Authenticate
                         </v-btn>
                         <div class="dividerStyle"></div>
                         <span style="color: grey; font-size: 15px; font-weight: 300; margin-top: 10px;">or create a new Identity</span>
-                        <v-btn class="authBtn pulse" style="background-color: #6b20ac; margin-top: 15px; color: white" v-on:click="dialog = true">
+                        <v-btn class="authBtn pulse" style="background-color: #6b20ac; margin-top: 15px; color: white; width: 100%" v-on:click="dialog = true">
                             <v-icon style="font-size: 20px; padding-right: 10px; color: white">person_add</v-icon>Generate Identity
                         </v-btn>
                     </form>
@@ -63,74 +61,72 @@
             </v-flex>
         </v-container>
         <!-- Password dialog -->
-        <v-layout row justify-center>
-          <v-dialog v-model="dialog" persistent max-width="500px" dark> 
-            <v-card class="genId">
-              <v-card-title>
-                <span class="headline" style="font-family: 'Dosis', sans-serif; font-size: 23px !important; font-weight: 600; color: white"><v-icon style="font-size: 26px; padding-right: 10px; margin-top: -6px; color: white">person_add</v-icon>Generate a new Identity</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container grid-list-md>
-                  <v-layout wrap>
-                    <v-flex xs12>
-                      <v-text-field 
-                      v-model="pw"
-                      name="input-10-1"
-                      color="white" 
-                      hint="At least 8 characters"
-                      :append-icon="newPassBol ? 'visibility' : 'visibility_off'"
-                      :append-icon-cb="() => (newPassBol = !newPassBol)"
-                      :type="newPassBol ? 'password' : 'text'"
-                      counter
-                      dark
-                      loading
-                      label="Select Password" 
-                      required
-                      >
-                        <v-progress-linear
-                          slot="progress"
-                          :value="pw_progress"
-                          :color="pw_color"
-                          height="3"
-                        ></v-progress-linear>
-                      </v-text-field>
-                    </v-flex>
-                    <v-flex xs12>
-                      <v-text-field 
-                      v-model="confirmpw"
-                      name="input-10-1"
-                      color="white"
-                      :append-icon="confPassBol ? 'visibility' : 'visibility_off'"
-                      :append-icon-cb="() => (confPassBol = !confPassBol)"
-                      :type="confPassBol ? 'password' : 'text'" 
-                      counter
-                      dark
-                      loading
-                      label="Confirm Password" 
-                      required
-                      >
-                        <v-progress-linear
-                          slot="progress"
-                          :value="confirmpw_progress"
-                          :color="confirmpw_color"
-                          height="3"
-                        ></v-progress-linear>
-                      </v-text-field>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-card-text>
-              <div class="warningAlert" v-if="pw != confirmpw" type="error">
-                <v-icon style="margin-right: 5px; font-size: 21px; color: #FF4151">warning</v-icon> passwords do not match
-              </div>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn class="genBtn" @click.native="dialog = false">Cancel</v-btn>
-                <v-btn class="genBtn" :loading="loader" @click.native="generate()" :disabled="(pw != confirmpw || pw.length < 8)">Generate</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-layout>
+        <v-dialog v-model="dialog" persistent max-width="500px" dark> 
+          <v-card class="genId">
+            <v-card-title>
+              <span class="headline" style="font-family: 'Dosis', sans-serif; font-size: 23px !important; font-weight: 600; color: white"><v-icon style="font-size: 26px; padding-right: 10px; margin-top: -6px; color: white">person_add</v-icon>Generate a new Identity</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12>
+                    <v-text-field 
+                    v-model="pw"
+                    name="input-10-1"
+                    color="white" 
+                    hint="At least 8 characters"
+                    :append-icon="newPassBol ? 'visibility' : 'visibility_off'"
+                    :append-icon-cb="() => (newPassBol = !newPassBol)"
+                    :type="newPassBol ? 'password' : 'text'"
+                    counter
+                    dark
+                    loading
+                    label="Select Password" 
+                    required
+                    >
+                      <v-progress-linear
+                        slot="progress"
+                        :value="pw_progress"
+                        :color="pw_color"
+                        height="3"
+                      ></v-progress-linear>
+                    </v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-text-field 
+                    v-model="confirmpw"
+                    name="input-10-1"
+                    color="white"
+                    :append-icon="confPassBol ? 'visibility' : 'visibility_off'"
+                    :append-icon-cb="() => (confPassBol = !confPassBol)"
+                    :type="confPassBol ? 'password' : 'text'" 
+                    counter
+                    dark
+                    loading
+                    label="Confirm Password" 
+                    required
+                    >
+                      <v-progress-linear
+                        slot="progress"
+                        :value="confirmpw_progress"
+                        :color="confirmpw_color"
+                        height="3"
+                      ></v-progress-linear>
+                    </v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <div class="warningAlert" v-if="pw != confirmpw" type="error">
+              <v-icon style="margin-right: 5px; font-size: 21px; color: #FF4151">warning</v-icon> passwords do not match
+            </div>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn class="genBtn" @click.native="dialog = false">Cancel</v-btn>
+              <v-btn class="genBtn" :loading="loader" @click.native="generate()" :disabled="(pw != confirmpw || pw.length < 8)">Generate</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-layout>
 </template>
 
@@ -306,10 +302,11 @@ export default {
 
 <style scoped>
 .authOverlay {
-  background: #222;
-  max-width: 100%;
+  background: transparent;
   width: 100%;
   height: 100%;
+  position: relative;
+  transform: translateY(10%);
 }
 .mainAuth {
   width: 100%;
@@ -343,15 +340,14 @@ input[type="file"] {
   opacity: 0.2;
 }
 .authBtn {
-  margin-top: 20px;
-  height: 45px;
-  color: black;
-  box-shadow: none;
-  width: 100%;
-  border-radius: 999px;
-  font-size: 15px;
+  font-family: "Raleway", sans-serif;
   font-weight: 700;
-  font-family: "Dosis", sans-serif !important;
+  font-size: 14px;
+  margin-top: 20px;
+  color: white;
+  box-shadow: none;
+  height: 55px;
+  border-radius: 999px;
 }
 .pulse {
   display: inline-block;

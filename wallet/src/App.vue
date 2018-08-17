@@ -20,20 +20,31 @@ export default {
   },
   created() {
     var self = this;
-    window.onload = function(){
+    window.onload = function() {
       self.$store.dispatch("bootstrap");
-    }
+    };
   }
 };
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
+
+* { padding: 0; margin: 0; }
+html, body, #fullheight {
+  min-height: 100% !important;
+  height: 100%;
+  background-image: linear-gradient(150deg, #ebc0fd 0%, #d9ded8 100%);
+}
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+body {
+  font-family: "Raleway", sans-serif;
 }
 #nav {
   padding: 30px;
