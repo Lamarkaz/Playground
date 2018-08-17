@@ -5,7 +5,7 @@
       <br>
       {{$store.state.wallet.address}}
       <br>
-      <v-btn @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout')">Logout</v-btn>
+      <v-btn @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout') && $localStorage.remove('wallet')">Logout</v-btn>
       <router-view/>
     </v-container>
     <Auth v-else/>
