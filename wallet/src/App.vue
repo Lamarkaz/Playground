@@ -34,7 +34,7 @@ export default {
 html, body, #fullheight {
   min-height: 100% !important;
   height: 100%;
-  background-image: linear-gradient(150deg, #ebc0fd 0%, #d9ded8 100%);
+  background-image: linear-gradient(130deg, #cd9cf2 0%, #f6f3ff 100%);
 }
 #app {
   font-family: "Raleway", sans-serif;
