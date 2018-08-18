@@ -437,6 +437,14 @@ input[type="file"] {
 .intro-carousel .carousel__controls {
   background: red !important;
 }
+.authOverlay {
+  opacity: 0;
+  animation-name: bounceIn;
+  animation-duration: 450ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.authOverlay{animation-delay: 0.3s;}
 /* Animation */
 @-webkit-keyframes pulse {
   0% {
@@ -463,4 +471,23 @@ input[type="file"] {
     box-shadow: 0 0 0 0 rgba(245, 181, 13, 0);
   }
 }
+@keyframes bounceIn{
+  0%{
+    opacity: 0;
+    transform: scale(0.3) translate3d(0,0,0);
+  }
+  50%{
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  80%{
+    opacity: 1;
+    transform: scale(0.89);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1) translate3d(0,0,0);
+  }
+}
+
 </style>
