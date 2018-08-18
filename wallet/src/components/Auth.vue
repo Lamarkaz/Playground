@@ -121,7 +121,7 @@
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="error" @click.native="dialog = false" style="box-shadow: none; height: 55px; width: 40%; margin: 0px; float: left; border-radius: 0px; font-weight: 700"><v-icon style="font-size: 21px; padding-right: 3px">remove_circle_outline</v-icon></v-icon>Cancel</v-btn>
+              <v-btn color="red" @click.native="dialog = false" style="box-shadow: none; height: 55px; width: 40%; margin: 0px; float: left; border-radius: 0px; font-weight: 700"><v-icon style="font-size: 21px; padding-right: 3px">remove_circle_outline</v-icon></v-icon>Cancel</v-btn>
               <v-btn color="yellow darken-3" :loading="loader" @click.native="generate()" :disabled="(pw != confirmpw || pw.length < 8)" style="box-shadow: none; height: 55px; width: 60%; margin: 0px; border-radius: 0px; font-weight: 700"><v-icon style="font-size: 21px; padding-right: 5px">playlist_add_check</v-icon></v-icon>Generate Identity</v-btn>
             </v-card-actions>
           </v-card>
