@@ -1,15 +1,17 @@
 <template>
-  <div id="app">
-    <v-container v-if="typeof $store.state.wallet.address != 'undefined'">
-      {{$store.state.wallet.name}}
-      <br>
-      {{$store.state.wallet.address}}
-      <br>
-      <v-btn @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout') && $localStorage.remove('wallet')">Logout</v-btn>
-      <router-view/>
-    </v-container>
-    <Auth v-else/>
-  </div>
+  <v-app>
+    <div id="app">
+      <v-container v-if="typeof $store.state.wallet.address != 'undefined'">
+        {{$store.state.wallet.name}}
+        <br>
+        {{$store.state.wallet.address}}
+        <br>
+        <v-btn @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout') && $localStorage.remove('wallet')">Logout</v-btn>
+        <router-view/>
+      </v-container>
+      <Auth v-else/>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -34,7 +36,7 @@ export default {
 html, body, #fullheight {
   min-height: 100% !important;
   height: 100%;
-  background-image: linear-gradient(130deg, #cd9cf2 0%, #f6f3ff 100%);
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%) !important;
 }
 #app {
   font-family: "Raleway", sans-serif;
