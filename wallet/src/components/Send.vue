@@ -45,41 +45,49 @@
 import { BigNumber } from "bignumber.js";
 
 export default {
-  props:['token','balance'],
+  props: ["token", "balance"],
   data: () => ({
     select: undefined,
     success: false,
     failure: false,
     valid: true,
-    amount: '',
-    loading:false,
+    amount: "",
+    loading: false,
     amountRules: [
       v => !!v || "Amount is required",
-      v =>
-        (v && !isNaN(v) && v > 0) ||
-        "Amount must be a number bigger than 0"
+      v => (v && !isNaN(v) && v > 0) || "Amount must be a number bigger than 0"
     ],
-    nameRules: [
-      v => !!v || "Name is required"
-    ],    
+    nameRules: [v => !!v || "Name is required"]
   }),
   methods: {
     submit() {
       this.loading = true;
       var self = this;
       if (this.$refs.form.validate()) {
-          var transfer = this.$contract.methods.transfer(this.token.symbol, this.$store.state.addresses[this.select], new BigNumber(this.amount).times(10 ** this.token.decimals).toString(10)).send({from:this.$store.state.wallet.address, gasPrice:0, gas:4000000})
-          transfer.on('receipt', function(){
-            self.clear();
-            self.failure = false;
-            self.success = true;
-            self.loading = false;
-          })
-          transfer.on('error', function(){
-            self.failure = true;
-            self.success = false;
-            self.loading = false;
-          })
+        var transfer = this.$contract.methods
+          .transfer(
+            this.token.symbol,
+            this.$store.state.addresses[this.select],
+            new BigNumber(this.amount)
+              .times(10 ** this.token.decimals)
+              .toString(10)
+          )
+          .send({
+            from: this.$store.state.wallet.address,
+            gasPrice: 0,
+            gas: 4000000
+          });
+        transfer.on("receipt", function() {
+          self.clear();
+          self.failure = false;
+          self.success = true;
+          self.loading = false;
+        });
+        transfer.on("error", function() {
+          self.failure = true;
+          self.success = false;
+          self.loading = false;
+        });
       }
     },
     clear() {
@@ -90,9 +98,9 @@ export default {
     insufficientBalance: function() {
       return parseInt(this.amount) > this.balance;
     },
-    nameIsCorrect: function () {
-      return typeof this.$store.state.addresses[this.select] != 'undefined';
+    nameIsCorrect: function() {
+      return typeof this.$store.state.addresses[this.select] != "undefined";
     }
-  } 
+  }
 };
 </script>
