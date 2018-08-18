@@ -20,8 +20,8 @@ var state = {
   tokens: {},
   wallet: {},
   names: {},
-  namesArr:[],
-  addresses: {},
+  namesArr: [],
+  addresses: {}
 };
 var mutations = {
   UPSERTNAME: function(state, obj) {
@@ -61,12 +61,12 @@ var actions = {
   login: function(context, wallet) {
     // Get name and register wallet
     whitelistContract.methods
-    .getName(wallet.address)
-    .call()
-    .then(function(result) {
-      wallet.name = result;
-      context.commit("LOGIN", wallet);
-    });
+      .getName(wallet.address)
+      .call()
+      .then(function(result) {
+        wallet.name = result;
+        context.commit("LOGIN", wallet);
+      });
   },
   logout: function(context) {
     context.commit("LOGOUT");

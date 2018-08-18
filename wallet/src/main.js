@@ -7,13 +7,12 @@ import Web3 from "web3";
 import config from "../../config.json";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
-import VueLocalStorage from 'vue-localstorage'
- 
+import VueLocalStorage from "vue-localstorage";
+
 Vue.use(Vuetify);
 Vue.use(VueLocalStorage, {
   bind: true //created computed members from your variable declarations
-})
-
+});
 
 Vue.config.productionTip = false;
 

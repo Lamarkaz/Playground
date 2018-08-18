@@ -185,10 +185,10 @@ export default {
   mounted() {
     this.filename = this.value;
   },
-  created () {
-    var wallet = this.$localStorage.get('wallet', null);
+  created() {
+    var wallet = this.$localStorage.get("wallet", null);
     if (wallet != null) {
-      this.$store.dispatch('login', wallet);
+      this.$store.dispatch("login", wallet);
     }
   },
   methods: {
@@ -211,7 +211,7 @@ export default {
                 return o;
               }
             } catch (e) {
-                return false;
+              return false;
             }
             return false;
           }
@@ -246,7 +246,7 @@ export default {
             ethers.Wallet.fromEncryptedWallet(self.json, self.password)
               .then(function(wallet) {
                 self.$web3.eth.accounts.wallet.add(wallet);
-                self.$localStorage.set('wallet', wallet);
+                self.$localStorage.set("wallet", wallet);
                 self.$store.dispatch("login", wallet);
               })
               .catch(function(e) {
