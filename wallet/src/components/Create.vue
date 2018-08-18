@@ -59,14 +59,14 @@ import { BigNumber } from "bignumber.js";
 export default {
   data: () => ({
     success: false,
-    loading:false,
+    loading: false,
     failure: false,
     valid: true,
     name: "Example Coin",
     symbol: "",
-    unavailable:false,
-    supply: '1000000',
-    decimals: '18',
+    unavailable: false,
+    supply: "1000000",
+    decimals: "18",
     nameRules: [
       v => !!v || "Token name is required",
       v =>
@@ -97,35 +97,49 @@ export default {
       this.loading = true;
       var self = this;
       if (this.$refs.form.validate()) {
-          var generate = this.$contract.methods.generate(this.symbol, this.name, this.decimals, new BigNumber(this.supply).times(10 ** this.decimals)).send({from:this.$store.state.wallet.address, gasPrice:0, gas:4000000});
-          generate.on("receipt", function(){
-            self.clear();
-            self.success = true;
-            self.failure = false;
-            self.loading = false;
-          })
-          generate.on("error", function(){
-            self.failure = true;
-            self.success = false;
-            self.loading = false;
-          })
+        var generate = this.$contract.methods
+          .generate(
+            this.symbol,
+            this.name,
+            this.decimals,
+            new BigNumber(this.supply).times(10 ** this.decimals)
+          )
+          .send({
+            from: this.$store.state.wallet.address,
+            gasPrice: 0,
+            gas: 4000000
+          });
+        generate.on("receipt", function() {
+          self.clear();
+          self.success = true;
+          self.failure = false;
+          self.loading = false;
+        });
+        generate.on("error", function() {
+          self.failure = true;
+          self.success = false;
+          self.loading = false;
+        });
       }
     },
     clear() {
       this.$refs.form.reset();
     },
     upperAndValidate: function() {
-      if(this.symbol) {
-        this.symbol = this.symbol.toUpperCase()
+      if (this.symbol) {
+        this.symbol = this.symbol.toUpperCase();
       }
       var self = this;
-      this.$contract.methods.getToken(this.symbol.toUpperCase()).call().then(function(result){
-        if(result.totalSupply === "0") {
-          self.unavailable = false;
-        }else{
-          self.unavailable = true;
-        }
-      })
+      this.$contract.methods
+        .getToken(this.symbol.toUpperCase())
+        .call()
+        .then(function(result) {
+          if (result.totalSupply === "0") {
+            self.unavailable = false;
+          } else {
+            self.unavailable = true;
+          }
+        });
     }
   }
 };

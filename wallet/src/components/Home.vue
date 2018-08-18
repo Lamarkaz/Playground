@@ -16,14 +16,14 @@
 <script>
 import Create from "./Create.vue";
 import { BigNumber } from "bignumber.js";
-import orderBy from 'lodash.orderby';
+import orderBy from "lodash.orderby";
 
 export default {
   name: "home",
-  data () {
+  data() {
     return {
       tokens: []
-    }
+    };
   },
   methods: {
     tokenUrl: function(symbol) {
@@ -34,14 +34,14 @@ export default {
     }
   },
   computed: {
-      orderedTokens: function () {
-          return orderBy(this.tokens, ['balance'], ['desc', 'asc'])
-      }
+    orderedTokens: function() {
+      return orderBy(this.tokens, ["balance"], ["desc", "asc"]);
+    }
   },
   components: {
     Create
   },
-  created () {
+  created() {
     var self = this;
     // Get all tokens
     this.$contract.events.NewToken({ fromBlock: 0 }, function(err, event) {
@@ -49,10 +49,13 @@ export default {
         // Reject tokens with symbols that are not 100% uppercase. This frontend validation helps keep unique symbols.
         event.returnValues.symbol === event.returnValues.symbol.toUpperCase()
       ) {
-        self.$contract.methods.getToken(event.returnValues.symbol).call({from:self.$store.state.wallet.address}).then(function(result){
-          result.symbol = event.returnValues.symbol;
-          self.tokens.push(result);
-        })
+        self.$contract.methods
+          .getToken(event.returnValues.symbol)
+          .call({ from: self.$store.state.wallet.address })
+          .then(function(result) {
+            result.symbol = event.returnValues.symbol;
+            self.tokens.push(result);
+          });
       }
     });
   }

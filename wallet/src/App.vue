@@ -32,8 +32,13 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
 
-* { padding: 0; margin: 0; }
-html, body, #fullheight {
+* {
+  padding: 0;
+  margin: 0;
+}
+html,
+body,
+#fullheight {
   min-height: 100% !important;
   height: 100%;
   background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%) !important;
