@@ -34,6 +34,15 @@ var mutations = {
   },
   LOGOUT: function(state) {
     state.wallet = {};
+  },
+  REMOVENAME: function(state, name) {
+    var address = state.addresses[name];
+    delete state.addresses[name];
+    delete state.names[address];
+    var index = state.namesArr.indexOf(name);
+    if (index > -1) {
+      state.namesArr.splice(index, 1);
+    }
   }
 };
 var actions = {
