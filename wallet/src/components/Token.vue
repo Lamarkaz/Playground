@@ -10,15 +10,22 @@
     <Send :token="token" :balance="balance"/>
     <br>
       <div v-for="item in orderedTxs" :key="item.hash">
-        <span v-if="item.senderName">{{item.senderName}} </span>
-        <span v-else>{{item.sender}} </span>
-        sent
-        <span>{{item.value}} {{$route.params.symbol}} </span>
-        to
-        <span v-if="item.recipientName">{{item.recipientName}} </span>
-        <span v-else>{{item.recipient}} </span>
-        <span>{{item.timestamp}}</span>
-        <br>
+        <div v-if="$store.getters.getName(item.sender) !=  'Token Mint'">
+             <span>{{$store.getters.getName(item.sender)}} </span>
+             sent
+             <span>{{item.value}} {{$route.params.symbol}} </span>
+             to
+             <span>{{$store.getters.getName(item.recipient)}} </span>
+             <span>{{item.timestamp}}</span>
+            <br>
+        </div>
+        <div v-if="$store.getters.getName(item.sender) ===  'Token Mint'">
+             <span>{{$store.getters.getName(item.recipient)}} </span>
+             created
+             <span>a new token called {{$route.params.symbol}} </span>
+             <span>{{item.timestamp}}</span>
+            <br>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -80,25 +87,7 @@ export default {
                     .div(10 ** self.token.decimals)
                     .toString(10)
                 };
-                if (
-                  tx.recipient.toLowerCase() ===
-                  self.$store.state.wallet.address.toLowerCase()
-                ) {
-                  self.$whitelistContract.methods
-                    .getName(event.returnValues.sender)
-                    .call()
-                    .then(function(result) {
-                      tx.recipientName = self.$store.state.wallet.name;
-                      if (result != "") {
-                        tx.senderName = result;
-                      } else if (
-                        tx.sender ===
-                        "0x0000000000000000000000000000000000000000"
-                      ) {
-                        tx.senderName = "Token Mint";
-                      }
-                      self.txs.push(tx);
-                    });
+                self.txs.push(tx);
                   // Update user token balance on each new transaction involving them
                   self.$contract.methods
                     .balanceOf(
@@ -111,33 +100,6 @@ export default {
                         .div(10 ** self.token.decimals)
                         .toString(10);
                     });
-                } else if (
-                  tx.sender.toLowerCase() ===
-                  self.$store.state.wallet.address.toLowerCase()
-                ) {
-                  self.$whitelistContract.methods
-                    .getName(event.returnValues.recipient)
-                    .call()
-                    .then(function(result) {
-                      tx.senderName = self.$store.state.wallet.name;
-                      if (result != "") {
-                        tx.recipientName = result;
-                      }
-                      self.txs.push(tx);
-                    });
-                  // Update user token balance on each new transaction involving them
-                  self.$contract.methods
-                    .balanceOf(
-                      self.$route.params.symbol,
-                      self.$store.state.wallet.address
-                    )
-                    .call()
-                    .then(function(result) {
-                      self.balance = new BigNumber(result)
-                        .div(10 ** self.token.decimals)
-                        .toString(10);
-                    });
-                }
               });
             }
           }

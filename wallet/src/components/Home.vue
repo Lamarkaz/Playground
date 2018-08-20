@@ -10,7 +10,7 @@
         <br>
         Balance: {{realBalance(item.balance, item.decimals)}} {{item.symbol}}
         <br>
-        Issuer: {{$store.state.names[item.generator]}}
+        Issuer: {{$store.getters.getName(item.generator)}}
       </li>
     </ul>
   </div>
