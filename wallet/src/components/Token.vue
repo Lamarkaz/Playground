@@ -16,7 +16,7 @@
         <span>{{item.value}} {{$route.params.symbol}} </span>
         to
         <span v-if="item.recipientName">{{item.recipientName}} </span>
-        <span v-else>Recipient: {{item.recipient}} </span>
+        <span v-else>{{item.recipient}} </span>
         <span>{{item.timestamp}}</span>
         <br>
       </div>
