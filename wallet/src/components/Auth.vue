@@ -18,45 +18,47 @@
                     <v-alert v-if="error" color="error" icon="warning" value="true" style="margin-top: -45px">
                     Error: please make sure you upload a valid identity file and enter the correct decryption password
                     </v-alert>
-                    <img class="walletLogo" src="../assets/wallet-icon.svg"></img>
+                    <div class="walletLogo">
+                      <img src="../assets/wallet-dark.png" width="60px"/>
+                    </div>
                     <h3 class="walletTypo">Playground <span style="color: #F5B50D">Wallet</span></h3>
                     <div class="dividerStyle"></div>
                     <div style="text-align: center; margin-bottom: 30px; font-size: 16px; font-weight: 600">ALREADY A USER?<br/><span style="color: grey; font-size: 15px; font-weight: 300">Import your Identity file and credentials to start</span></div>
                     <form class="authForm">
-                        <v-text-field class="inputStyle"
-                        prepend-icon="attach_file" single-line
-                        v-model="filename" :label="label"
-                        @click.native="onFocus"
-                        :disabled="disabled"
-                        :rules="[v => !!v || 'Identity file is required!']"
-                        ref="fileTextField"
+                      <v-text-field class="inputStyle"
+                      prepend-icon="attach_file" single-line
+                      v-model="filename" :label="label"
+                      @click.native="onFocus"
+                      :disabled="disabled"
+                      :rules="[v => !!v || 'Identity file is required!']"
+                      ref="fileTextField"
+                      color="yellow darken-3"
+                      loading
+                      required
+                      ></v-text-field>
+                      <input type="file" :multiple="false" :disabled="disabled" ref="fileInput" @change="onFileChange"/>
+                      <v-text-field class="inputStyle"
+                        v-model="password"
+                        prepend-icon="lock" single-line
+                        name="input-10-1"
+                        label="Enter your password"
+                        hint="At least 8 characters"
+                        min="8"
+                        :append-icon="passBol ? 'visibility' : 'visibility_off'"
+                        :append-icon-cb="() => (passBol = !passBol)"
+                        :type="passBol ? 'password' : 'text'"
                         color="yellow darken-3"
-                        loading
+                        counter
                         required
-                        ></v-text-field>
-                        <input type="file" :multiple="false" :disabled="disabled" ref="fileInput" @change="onFileChange"/>
-                        <v-text-field class="inputStyle"
-                            v-model="password"
-                            prepend-icon="lock" single-line
-                            name="input-10-1"
-                            label="Enter your password"
-                            hint="At least 8 characters"
-                            min="8"
-                            :append-icon="passBol ? 'visibility' : 'visibility_off'"
-                            :append-icon-cb="() => (passBol = !passBol)"
-                            :type="passBol ? 'password' : 'text'"
-                            color="yellow darken-3"
-                            counter
-                            required
-                        ></v-text-field>
-                        <v-btn :disabled="!valid" class="authBtn" style="width: 100%; box-shadow: none" v-on:click="authenticate">
-                            <v-icon style="font-size: 20px; padding-right: 10px;">vpn_key</v-icon>Authenticate
-                        </v-btn>
-                        <div class="dividerStyle"></div>
-                        <span style="color: grey; font-size: 15px; font-weight: 300; margin-top: 10px">or create a new Identity</span>
-                        <v-btn class="authBtn pulse" style="background-color: #F5B50D; margin-top: 15px; color: black; width: 100%; margin-bottom: 20px" v-on:click="dialog = true">
-                          <v-icon style="font-size: 20px; padding-right: 10px; color: black">person_add</v-icon>Generate Identity
-                        </v-btn>
+                      ></v-text-field>
+                      <v-btn :disabled="!valid" class="authBtn" :loading="authLoader" style="width: 100%; box-shadow: none" v-on:click="authenticate">
+                          <v-icon style="font-size: 20px; padding-right: 10px;">vpn_key</v-icon>Authenticate
+                      </v-btn>
+                      <div class="dividerStyle"></div>
+                      <span style="color: grey; font-size: 15px; font-weight: 300; margin-top: 10px">or create a new Identity</span>
+                      <v-btn class="authBtn pulse" style="background-color: #F5B50D; margin-top: 15px; color: black; width: 100%; margin-bottom: 20px" v-on:click="dialog = true">
+                        <v-icon style="font-size: 20px; padding-right: 10px; color: black">person_add</v-icon>Generate Identity
+                      </v-btn>
                     </form>
                 </v-card>
             </v-flex>
@@ -173,6 +175,7 @@ export default {
       pw: "",
       confirmpw: "",
       loader: false,
+      authLoader: false,
       tempWallet: {},
       generated: false
     };
@@ -188,7 +191,7 @@ export default {
   created() {
     var wallet = this.$localStorage.get("wallet", null);
     if (wallet != null) {
-      self.$web3.eth.accounts.wallet.add(wallet);
+      this.$web3.eth.accounts.wallet.add(wallet);
       this.$store.dispatch("login", wallet);
     }
   },
@@ -238,6 +241,7 @@ export default {
     },
     authenticate() {
       var self = this;
+      this.authLoader = true;
       this.ready = false;
       this.$whitelistContract.methods
         .isWhitelisted("0x" + JSON.parse(this.json).address)
@@ -252,6 +256,7 @@ export default {
               })
               .catch(function(e) {
                 alert(e);
+                self.authLoader = false;
               });
             self.ready = true;
           } else {
@@ -323,7 +328,13 @@ export default {
   margin-left: auto;
 }
 .walletLogo {
-  width: 90px;
+  height: 105px;
+  width: 100px;
+  background: #fafafa;
+  border-radius: 999px;
+  padding: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 .walletTypo {
   font-size: 21px;
@@ -339,6 +350,7 @@ input[type="file"] {
 .authCard {
   width: 100%;
   padding: 35px;
+  padding-top: 0px;
   border-radius: 5px;
   margin-right: auto;
   margin-left: auto;
@@ -406,8 +418,7 @@ input[type="file"] {
   box-shadow: none !important;
 }
 .authBtn:hover {
-  background-color: #F5B50D !important;
-  box-shadow: none !important;
+  background-color: #eee;
 }
 .warningAlert {
   left: 0px;

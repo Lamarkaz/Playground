@@ -1,56 +1,56 @@
 <template>
-    <div>
-        <v-expansion-panel>
-            <v-expansion-panel-content
+    <v-container>
+      <v-expansion-panel>
+        <v-expansion-panel-content
+        >
+        <div slot="header">Create a Token</div>
+        <v-card>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <p style="color:green" v-if="success">Token created successfully!</p>
+            <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>
+            <v-text-field
+            v-model="name"
+            :rules="nameRules"
+            :counter="20"
+            label="Token Name"
+            required
+            ></v-text-field>
+            <v-text-field
+            v-model="symbol"
+            @input="upperAndValidate"
+            :rules="symbolRules"
+            :counter="3"
+            label="Token Symbol"
+            required
+            ></v-text-field>
+            <p style="color:red" v-if="unavailable">This token symbol is unavailable. Please try another.</p>
+            <v-text-field
+            v-model="decimals"
+            :rules="decimalRules"
+            :counter="2"
+            label="Token Decimals"
+            required
+            ></v-text-field>
+            <v-text-field
+            v-model="supply"
+            :rules="supplyRules"
+            :counter="100"
+            label="Total Token Supply"
+            required
+            ></v-text-field>
+            <v-btn
+            :disabled="!valid || unavailable"
+            :loading="loading"
+            @click="submit"
             >
-            <div slot="header">Create a Token</div>
-            <v-card>
-                <v-form ref="form" v-model="valid" lazy-validation>
-                    <p style="color:green" v-if="success">Token created successfully!</p>
-                    <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>
-                    <v-text-field
-                    v-model="name"
-                    :rules="nameRules"
-                    :counter="20"
-                    label="Token Name"
-                    required
-                    ></v-text-field>
-                    <v-text-field
-                    v-model="symbol"
-                    @input="upperAndValidate"
-                    :rules="symbolRules"
-                    :counter="3"
-                    label="Token Symbol"
-                    required
-                    ></v-text-field>
-                    <p style="color:red" v-if="unavailable">This token symbol is unavailable. Please try another.</p>
-                    <v-text-field
-                    v-model="decimals"
-                    :rules="decimalRules"
-                    :counter="2"
-                    label="Token Decimals"
-                    required
-                    ></v-text-field>
-                    <v-text-field
-                    v-model="supply"
-                    :rules="supplyRules"
-                    :counter="100"
-                    label="Total Token Supply"
-                    required
-                    ></v-text-field>
-                    <v-btn
-                    :disabled="!valid || unavailable"
-                    :loading="loading"
-                    @click="submit"
-                    >
-                    Create
-                    </v-btn>
-                    <v-btn @click="clear">clear</v-btn>
-                </v-form>
-            </v-card>
-            </v-expansion-panel-content>
-        </v-expansion-panel>
-    </div>
+            Create
+            </v-btn>
+            <v-btn @click="clear">clear</v-btn>
+          </v-form>
+        </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-container>
 </template>
 
 <script>

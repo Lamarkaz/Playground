@@ -1,14 +1,9 @@
 <template>
   <v-app>
     <div id="app">
-      <v-container v-if="typeof $store.state.wallet.address != 'undefined'">
-        {{$store.state.wallet.name}}
-        <br>
-        {{$store.state.wallet.address}}
-        <br>
-        <v-btn @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout') && $localStorage.remove('wallet')">Logout</v-btn>
+      <div v-if="typeof $store.state.wallet.address != 'undefined'">
         <router-view/>
-      </v-container>
+      </div>
       <Auth v-else/>
     </div>
   </v-app>
@@ -32,13 +27,8 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
 
-* {
-  padding: 0;
-  margin: 0;
-}
-html,
-body,
-#fullheight {
+* { padding: 0; margin: 0; }
+html, body, #fullheight {
   min-height: 100% !important;
   height: 100%;
   background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%) !important;

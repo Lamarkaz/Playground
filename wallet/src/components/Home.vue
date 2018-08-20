@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Create/>
+    <Toolbar/>
+    <v-container>
+      <Create/>
+    </v-container>
     <ul>
       <li v-if="item.balance && item.balance > 0" v-for="item in orderedTokens" :key="item.symbol">
         <a :href="tokenUrl(item.symbol)">Token Name: {{item.name}}</a>
@@ -14,6 +17,7 @@
 </template>
 
 <script>
+import Toolbar from "./Toolbar.vue";
 import Create from "./Create.vue";
 import { BigNumber } from "bignumber.js";
 import orderBy from "lodash.orderby";
@@ -39,6 +43,7 @@ export default {
     }
   },
   components: {
+    Toolbar,
     Create
   },
   created() {
