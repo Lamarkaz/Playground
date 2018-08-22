@@ -6,7 +6,7 @@
         >
         <div slot="header">Create a Token</div>
         <v-card style="margin: 15px; max-width: 80%; margin-right: auto; margin-left: auto">
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid">
             <p style="color:green" v-if="success">Token created successfully!</p>
             <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>
             <v-text-field
@@ -62,7 +62,7 @@ export default {
     success: false,
     loading: false,
     failure: false,
-    valid: true,
+    valid: false,
     name: "Example Coin",
     symbol: "",
     unavailable: false,

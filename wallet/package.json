@@ -16,6 +16,7 @@
     "js-md5": "^0.7.3",
     "lodash.orderby": "^4.6.0",
     "moment": "^2.22.2",
+    "numeral": "^2.0.6",
     "register-service-worker": "^1.0.0",
     "sweetalert": "^2.1.0",
     "vue": "^2.5.17",

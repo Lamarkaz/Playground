@@ -2,6 +2,7 @@
   <v-app>
     <div id="app">
       <div v-if="typeof $store.state.wallet.address != 'undefined'">
+        <Toolbar/>
         <router-view/>
       </div>
       <Auth v-else/>
@@ -11,9 +12,11 @@
 
 <script>
 import Auth from "./components/Auth.vue";
+import Toolbar from "./components/Toolbar.vue";
 export default {
   components: {
-    Auth
+    Auth,
+    Toolbar
   },
   created() {
     var self = this;

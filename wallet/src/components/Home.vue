@@ -1,40 +1,32 @@
 <template>
   <div>
-    <Toolbar/>
     <v-container>
-      <h2 style="margin-bottom: 20px; color: black"><v-icon style="color: black">apps</v-icon>Home</h2>
+      <h2 style="margin-bottom: 20px; color: black"><v-icon style="color: black">monetization_on</v-icon>Tokens</h2>
       <pie-chart label="Your Tokens" height="200px" class="bounceIn" legend="bottom" :donut="true" :data="tokenChart" v-if="tokenChart.length > 0"></pie-chart>
       <Create/>
     </v-container>
       <v-list two-line style="max-width: 500px; margin-left: auto; margin-right: auto; padding: 0px">
         <template v-if="item.balance && item.balance > 0" v-for="item in orderedTokens">
-          <li class="token" :key="item.symbol">
-            <v-subheader :href="tokenUrl(item.symbol)">Token Name: {{item.name}}</v-subheader>
-            <v-list-tile-content style="text-align: center">
-            <v-list-tile-title style="margin-left: 20px">Balance: {{realBalance(item.balance, item.decimals)}} {{item.symbol}}</v-list-tile-title>
-            <v-list-tile-sub-title style="margin-bottom: 8px">Issuer: {{$store.getters.getName(item.generator)}}</v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
-          </li>
+          <a :href="tokenUrl(item.symbol)" :key="item.symbol" style="text-decoration: none">
+            <li class="token">
+              <v-subheader>{{item.name}}</v-subheader>
+              <v-list-tile-content>
+              <v-list-tile-title style="margin-left: 23px; color: black">{{realBalance(item.balance, item.decimals)}} {{item.symbol}}</v-list-tile-title>
+              <v-list-tile-sub-title style="margin-bottom: 8px; margin-left: 23px">Issuer: {{item.generatorName}}</v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
+            </li>
+          </a>
         </template>
       </v-list>
-        <v-btn
-          color="yellow darken-2"
-          dark
-          bottom
-          right
-          fab
-        >
-          <v-icon color="black">add</v-icon>
-        </v-btn>
   </div>
 </template>
 
 <script>
-import Toolbar from "./Toolbar.vue";
 import Create from "./Create.vue";
 import { BigNumber } from "bignumber.js";
 import orderBy from "lodash.orderby";
+import numeral from 'numeral';
 
 export default {
   name: "home",
@@ -48,7 +40,12 @@ export default {
       return "/#/token/" + symbol;
     },
     realBalance: function(balance, decimals) {
-      return new BigNumber(balance).div(10 ** decimals).toString(10);
+      if(BigNumber(balance).div(10 ** decimals).gt(1)) {
+        return new numeral(BigNumber(balance).div(10 ** decimals).toString(10)).format('0a');
+      }
+      else {
+        return new numeral(BigNumber(balance).div(10 ** decimals).toString(10)).format('0.000a');
+      }
     }
   },
   computed: {
@@ -69,7 +66,6 @@ export default {
     }
   },
   components: {
-    Toolbar,
     Create
   },
   created() {
@@ -84,8 +80,20 @@ export default {
           .getToken(event.returnValues.symbol)
           .call({ from: self.$store.state.wallet.address })
           .then(function(result) {
-            result.symbol = event.returnValues.symbol;
-            self.tokens.push(result);
+            self.$whitelistContract.methods
+            .whitelist(event.returnValues.generator)
+            .call()
+            .then(function(wl) {
+              result.symbol = event.returnValues.symbol;
+              if(wl.name === ""){
+                result.generatorName = result.generator
+              }else if(result.generator === self.$store.state.wallet.address){
+                result.generatorName = "You"
+              }else{
+                result.generatorName = wl.name
+              }
+              self.tokens.push(result);
+            });
           });
       }
     });

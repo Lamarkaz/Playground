@@ -86,9 +86,9 @@ var getters = {
   getName: (state) => (address) =>{
     if(address.toUpperCase() === state.wallet.address.toUpperCase()) {
       return "You"
-    } else if(address = "0x0000000000000000000000000000000000000000") {
+    } else if(address === "0x0000000000000000000000000000000000000000") {
       return "Token Mint"
-    } else if(state.names[address] != null) {
+    } else if(typeof state.names[address] != 'undefined') {
       return state.names[address]
     } else {
       return address

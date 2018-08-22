@@ -8,9 +8,9 @@
       <v-spacer></v-spacer>
       <v-tooltip color="black" bottom>
         <v-btn dark icon slot="activator">
-          <v-icon>apps</v-icon>
+          <v-icon>attach_money</v-icon>
         </v-btn>
-        <span>Home</span>
+        <span>Tokens</span>
       </v-tooltip>
       <v-tooltip color="black" bottom>
         <v-btn icon slot="activator">
