@@ -93,7 +93,7 @@ export default {
             fromBlock: 0
           },
           function(err, event) {
-            if (event.returnValues.symbol === self.$route.params.symbol) {
+            if (event.returnValues.symbol === self.$route.params.symbol && (event.returnValues.sender === self.$store.state.wallet.address || event.returnValues.recipient === self.$store.state.wallet.address)) {
               self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
                 var tx = {
                   hash: event.transactionHash,

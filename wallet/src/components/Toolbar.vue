@@ -7,7 +7,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip color="black" bottom>
-        <v-btn dark icon slot="activator">
+        <v-btn dark icon slot="activator" @click="$router.push('/')">
           <v-icon>attach_money</v-icon>
         </v-btn>
         <span>Tokens</span>
