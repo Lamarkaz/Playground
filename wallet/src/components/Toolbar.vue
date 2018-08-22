@@ -12,12 +12,14 @@
         </v-btn>
         <span>Tokens</span>
       </v-tooltip>
+      <!-- 
       <v-tooltip color="black" bottom>
         <v-btn icon slot="activator">
           <v-icon>notifications_none</v-icon>
         </v-btn>
         <span>Notifcations</span>
       </v-tooltip>
+      -->
       <v-menu dark bottom open-on-hover :close-on-content-click="false" transition="slide-y-transition">
         <v-btn icon slot="activator">
           <v-icon>more_vert</v-icon>
@@ -39,10 +41,6 @@
           <v-divider></v-divider>
 
           <v-list>
-            <v-list-tile>
-              <v-list-tile-title style="cursor: pointer" @click=""><v-icon style="margin-right: 3px">short_text</v-icon>Copy Address</v-list-tile-title>
-            </v-list-tile>
-
             <v-list-tile>
               <v-list-tile-title style="cursor: pointer" @click="$web3.eth.accounts.wallet.clear() && $store.dispatch('logout') && $localStorage.remove('wallet')"><v-icon style="font-size: 20px; margin-right: 10px">exit_to_app</v-icon>Logout</v-list-tile-title>
             </v-list-tile>

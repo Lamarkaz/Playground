@@ -3,7 +3,7 @@
             <v-expansion-panel-content
             >
             <div slot="header">Send {{token.symbol}}</div>
-                <v-form ref="form" v-model="valid" lazy-validation>
+                <v-form ref="form" v-model="valid" style="margin: 15px; max-width: 80%; margin-right: auto; margin-left: auto">
                     <p style="color:green" v-if="success">Tokens sent successfully!</p>
                     <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>
                     <v-autocomplete
