@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="token != {}">
+    <div v-if="token.totalSupply > 0">
     Token Name: {{token.name}}
     <br>
     Balance: {{balance}} {{$route.params.symbol}}
@@ -45,10 +45,15 @@ export default {
     return {
       token: {},
       balance: 0,
-      txs: []
+      txs: [],
+      sub:false,
+      interval:false
     };
   },
-  created() {
+  methods:{
+    getToken:function(){
+    this.token = {}
+    this.txs = []
     var self = this;
     // Get token info
     this.$contract.methods
@@ -61,8 +66,11 @@ export default {
         delete result.balance;
         result.symbol = self.$route.params.symbol;
         self.token = result;
+        if(self.sub != false){
+          self.sub.unsubscribe();
+        }
         // Subscribe to txs
-        self.$contract.events.Transfer(
+        self.sub = self.$contract.events.Transfer(
           {
             filter: [
               { sender: self.$store.state.wallet.address },
@@ -104,8 +112,11 @@ export default {
             }
           }
         );
+        if(self.interval != false) {
+          clearInterval(self.interval)
+        }
         // Update tx relative time every minute
-        setInterval(function() {
+        self.interval = setInterval(function() {
           var newArr = [];
           for (var i = 0; i < self.txs.length; i++) {
             var tx = self.txs[i];
@@ -117,6 +128,10 @@ export default {
           self.txs = newArr;
         }, 60000);
       });
+    }
+  },
+  created() {
+
   },
   computed: {
     orderedTxs: function() {
@@ -125,6 +140,11 @@ export default {
   },
   components: {
     Send
+  },
+  watch: {
+    '$route.params.symbol':function() {
+      this.getToken()
+    }
   }
 };
 </script>
