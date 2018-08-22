@@ -58,7 +58,7 @@ export default {
         if(this.tokens[i].balance && this.tokens[i].balance > 0){
           var token = []
           token.push(this.tokens[i].symbol);
-          token.push(this.realBalance(this.tokens[i].balance, this.tokens[i].decimals))
+          token.push(BigNumber(this.tokens[i].balance).div(10 ** this.tokens[i].decimals))
           arr.push(token)
         }
       }
