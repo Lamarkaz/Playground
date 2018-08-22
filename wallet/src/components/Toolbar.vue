@@ -6,15 +6,9 @@
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <v-btn dark icon slot="activator">
-          <v-icon>apps</v-icon>
-        </v-btn>
-        <span>Home</span>
-      </v-tooltip>
-      <v-tooltip bottom>
-        <v-btn dark icon slot="activator">
           <v-icon>list_alt</v-icon>
         </v-btn>
-        <span>My tokens</span>
+        <span>Home</span>
       </v-tooltip>
       <v-tooltip bottom>
         <v-btn icon slot="activator">
@@ -22,21 +16,21 @@
         </v-btn>
         <span>Notifcations</span>
       </v-tooltip>
-      <v-menu dark bottom :close-on-content-click="false" transition="slide-y-transition">
+      <v-menu dark bottom open-on-hover :close-on-content-click="false" transition="slide-y-transition">
         <v-btn icon slot="activator">
           <v-icon>more_vert</v-icon>
         </v-btn>
 
         <v-card>
           <v-list>
-            <v-list-tile-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
-            </v-list-tile-avatar>
+            <v-list-tile>
+              <v-list-tile-avatar>
+                <v-gravatar :hash="getHash($store.state.wallet.address)" class="vGravatar"/>
+              </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ $store.state.wallet.name }}</v-list-tile-title>
-                <v-list-tile-sub-title style="word-break: break-all">{{ $store.state.wallet.address}}</v-list-tile-sub-title>
+                <v-list-tile-title style="color: #fbc02d">{{ $store.state.wallet.name }}</v-list-tile-title>
+                <v-list-tile-sub-title style="word-break: break-all">{{ $store.state.wallet.address }}</v-list-tile-sub-title>
               </v-list-tile-content>
-
             </v-list-tile>
           </v-list>
 
@@ -64,7 +58,26 @@ export default {
       { title: 'Copy Address' },
       { title: 'Logout' }
     ],
-  })
+  }),
+  methods: {
+    getHash: function (buffer, algo = "SHA-256") {
+      return crypto.subtle.digest(algo, buffer)
+        .then(hash => {
+          // here hash is an arrayBuffer, so we'll convert it to its hex version
+          let result = '';
+          const view = new DataView(hash);
+          for (let i = 0; i < hash.byteLength; i += 4) {
+            result += ('00000000' + view.getUint32(i).toString(16)).slice(-8);
+          }
+          return result;
+        });
+    }
+  },
+  computed: {
+    gravatarHash: function () {
+      return getHash($store.state.wallet.address)
+    }
+  }
 }
 </script>
 
