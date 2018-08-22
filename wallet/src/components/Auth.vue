@@ -1,18 +1,22 @@
 <template>
     <v-layout class="authLayout">
-        <v-container v-if="generated">
-            You are almost done!
-
-            Just a few more steps:
-
-            1. Download identity file on your device. Make sure you keep a few backups. Without this device, you won't be able to access your account.
-            <v-btn @click="download">Download</v-btn>
-            <br>
-            2. Send an email to contact@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.
-            <br>
-            3. Wait for an email response then come back to this webpage to login.
+        <v-container class="Geninstr authOverlay" v-if="generated">
+          <center>
+            <div class="iconWrapper">
+              <v-icon style="color: black; font-size: 39px">done_all</v-icon>
+            </div>
+          </center>
+          <h3>You are almost done!</h3>
+          <h2 style="margin-bottom: 30px">Just a few more steps:</h2>
+          <v-card style="padding: 25px">
+            <div class="instrText">
+              <div class="txt">1. Keep the downloaded identity file on your device. Make sure you keep a few backups. Without this file, you won't be able to access your account.</div>
+              <div class="txt">2. Send an email to contact@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.</div>
+              <div class="txt">3. Wait for an email response then come back to this webpage to login.</div>
+            </div>
+          </v-card>
         </v-container>
-        <v-container v-else class="authOverlay">
+        <v-container class="authOverlay" v-else>
             <v-flex style="margin-left: auto; margin-right: auto; margin-top: 30px; max-width: 480px">
                 <v-card class="authCard">
                     <v-alert v-if="error" color="error" icon="warning" value="true" style="margin-top: -45px">
@@ -136,6 +140,7 @@
 import ethers from "ethers";
 import { saveAs } from "file-saver/FileSaver";
 import '../assets/wallet-icon.svg'
+import swal from 'sweetalert'
 
 export default {
   props: {
@@ -255,7 +260,10 @@ export default {
                 self.$store.dispatch("login", wallet);
               })
               .catch(function(e) {
-                alert(e);
+                swal("Error", 'Invalid password', "error", {
+                  buttons: false,
+                  timer: 3000,
+                });
                 self.authLoader = false;
               });
             self.ready = true;
@@ -281,8 +289,13 @@ export default {
             self.dialog = false;
             self.generated = true;
             self.tempWallet = JSON.parse(json);
+            self.download()
           });
         }
+      });
+      swal("You are almost done!", 'Your Identity file is being generated', "info", {
+        buttons: false,
+        timer: 6000
       });
     },
     download: function() {
@@ -457,6 +470,28 @@ input[type="file"] {
   animation-fill-mode: forwards;
 }
 .authOverlay{animation-delay: 0.3s;}
+.Geninstr {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+}
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  padding: 20px;
+  background-color: #fbc02d;
+  border-radius: 999px;
+  margin-bottom: 25px;
+}
+.instrText { 
+  text-align: left;
+  font-weight: 500;
+  font-size: 16px;
+}
+.txt { 
+  margin-bottom: 7px;
+}
 /* Animation */
 @-webkit-keyframes pulse {
   0% {

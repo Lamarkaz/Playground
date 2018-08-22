@@ -2,41 +2,37 @@
   <div>
     <v-progress-linear :indeterminate="true" height="5" color="yellow darken-2" style="margin: 0px"></v-progress-linear>
     <v-toolbar dark flat height="70">
-      <v-toolbar-title style="color: #fbc02d; font-weight: 700">Playground Wallet</v-toolbar-title>
+      <v-toolbar-title style="color: #fbc02d; font-weight: 700; font-size: 18px">
+        Playground Wallet
+      </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tooltip bottom>
+      <v-tooltip color="black" bottom>
         <v-btn dark icon slot="activator">
           <v-icon>apps</v-icon>
         </v-btn>
         <span>Home</span>
       </v-tooltip>
-      <v-tooltip bottom>
-        <v-btn dark icon slot="activator">
-          <v-icon>list_alt</v-icon>
-        </v-btn>
-        <span>My tokens</span>
-      </v-tooltip>
-      <v-tooltip bottom>
+      <v-tooltip color="black" bottom>
         <v-btn icon slot="activator">
-          <v-icon>notification_important</v-icon>
+          <v-icon>notifications_none</v-icon>
         </v-btn>
         <span>Notifcations</span>
       </v-tooltip>
-      <v-menu dark bottom :close-on-content-click="false" transition="slide-y-transition">
+      <v-menu dark bottom open-on-hover :close-on-content-click="false" transition="slide-y-transition">
         <v-btn icon slot="activator">
           <v-icon>more_vert</v-icon>
         </v-btn>
 
         <v-card>
           <v-list>
-            <v-list-tile-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
-            </v-list-tile-avatar>
+            <v-list-tile>
+              <v-list-tile-avatar>
+                <v-gravatar :hash="gravatarHash" class="vGravatar"/>
+              </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ $store.state.wallet.name }}</v-list-tile-title>
-                <v-list-tile-sub-title style="word-break: break-all">{{ $store.state.wallet.address}}</v-list-tile-sub-title>
+                <v-list-tile-title style="color: #fbc02d">{{ $store.state.wallet.name }}</v-list-tile-title>
+                <v-list-tile-sub-title style="word-break: break-all">{{ $store.state.wallet.address }}</v-list-tile-sub-title>
               </v-list-tile-content>
-
             </v-list-tile>
           </v-list>
 
@@ -58,13 +54,20 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
+
 export default {
   data: () => ({
     dropdownBtns: [
       { title: 'Copy Address' },
       { title: 'Logout' }
     ],
-  })
+  }),
+  computed: {
+    gravatarHash: function () {
+      return md5(this.$store.state.wallet.address)
+    }
+  }
 }
 </script>
 

@@ -1806,6 +1806,34 @@ chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
 
+charenc@~0.0.1:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
+
+chart.js@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.7.2.tgz#3c9fde4dc5b95608211bdefeda7e5d33dffa5714"
+  dependencies:
+    chartjs-color "^2.1.0"
+    moment "^2.10.2"
+
+chartjs-color-string@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/chartjs-color-string/-/chartjs-color-string-0.5.0.tgz#8d3752d8581d86687c35bfe2cb80ac5213ceb8c1"
+  dependencies:
+    color-name "^1.0.0"
+
+chartjs-color@^2.1.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/chartjs-color/-/chartjs-color-2.2.0.tgz#84a2fb755787ed85c39dd6dd8c7b1d88429baeae"
+  dependencies:
+    chartjs-color-string "^0.5.0"
+    color-convert "^0.5.3"
+
+chartkick@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/chartkick/-/chartkick-3.0.1.tgz#f325041bfc15f5d18074d4803549efc3751ccd81"
+
 check-more-types@2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/check-more-types/-/check-more-types-2.24.0.tgz#1420ffb10fd444dcfc79b43891bbfffd32a84600"
@@ -1943,6 +1971,10 @@ collection-visit@^1.0.0:
   dependencies:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
+
+color-convert@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-0.5.3.tgz#bdb6c69ce660fadffe0b0007cc447e1b9f7282bd"
 
 color-convert@^1.9.0, color-convert@^1.9.1:
   version "1.9.2"
@@ -2210,6 +2242,10 @@ cross-spawn@^6.0.0:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+crypt@~0.0.1:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
 
 crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
   version "3.12.0"
@@ -2552,6 +2588,10 @@ deepmerge@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.2.tgz#10499d868844cdad4fee0842df8c7f6f0c95a753"
 
+deepmerge@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.1.1.tgz#e862b4e45ea0555072bf51e7fd0d9845170ae768"
+
 defaults@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/defaults/-/defaults-1.0.3.tgz#c656051e9817d9ff08ed881477f3fe4019f3ef7d"
@@ -2876,6 +2916,10 @@ es6-iterator@~2.0.3:
     d "1"
     es5-ext "^0.10.35"
     es6-symbol "^3.1.1"
+
+es6-object-assign@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
 
 es6-symbol@^3.1.1, es6-symbol@~3.1.1:
   version "3.1.1"
@@ -4207,7 +4251,7 @@ is-binary-path@^1.0.0:
   dependencies:
     binary-extensions "^1.0.0"
 
-is-buffer@^1.1.5:
+is-buffer@^1.1.5, is-buffer@~1.1.1:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
 
@@ -4529,6 +4573,10 @@ joi@^13.0.0:
     hoek "5.x.x"
     isemail "3.x.x"
     topo "3.x.x"
+
+js-md5@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/js-md5/-/js-md5-0.7.3.tgz#b4f2fbb0b327455f598d6727e38ec272cd09c3f2"
 
 js-message@1.0.5:
   version "1.0.5"
@@ -4962,6 +5010,14 @@ md5.js@^1.3.4:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+md5@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/md5/-/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
+  dependencies:
+    charenc "~0.0.1"
+    crypt "~0.0.1"
+    is-buffer "~1.1.1"
+
 mdn-data@^1.0.0, mdn-data@~1.1.0:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-1.1.4.tgz#50b5d4ffc4575276573c4eedb8780812a8419f01"
@@ -5178,7 +5234,7 @@ mock-fs@^4.1.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.6.0.tgz#d944ef4c3e03ceb4e8332b4b31b8ac254051c8ae"
 
-moment@^2.22.2:
+moment@^2.10.2, moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
@@ -6173,6 +6229,10 @@ progress@^2.0.0:
 promise-inflight@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
+
+promise-polyfill@^6.0.2:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
 
 proxy-addr@~2.0.3:
   version "2.0.4"
@@ -7263,6 +7323,13 @@ swarm-js@0.1.37:
     tar.gz "^1.0.5"
     xhr-request-promise "^0.1.2"
 
+sweetalert@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/sweetalert/-/sweetalert-2.1.0.tgz#d605dec840058fa8ad4a1f7c2c8c194bc72c27fa"
+  dependencies:
+    es6-object-assign "^1.1.0"
+    promise-polyfill "^6.0.2"
+
 symbol-observable@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
@@ -7760,6 +7827,14 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-chartkick@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/vue-chartkick/-/vue-chartkick-0.5.0.tgz#3ede6a3042e5436f82228b89886f867a0d1dbc14"
+  dependencies:
+    chartkick "^3.0.0"
+    deep-equal "^1.0.1"
+    deepmerge "^2.1.1"
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
@@ -7770,6 +7845,12 @@ vue-eslint-parser@^2.0.3:
     espree "^3.5.2"
     esquery "^1.0.0"
     lodash "^4.17.4"
+
+vue-gravatar@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/vue-gravatar/-/vue-gravatar-1.2.1.tgz#b430fca925606c96b004d8aeb7894b8afd07bba0"
+  dependencies:
+    md5 "^2.2.1"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.0"
