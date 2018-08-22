@@ -1,10 +1,11 @@
 <template>
     <v-container>
-      <v-expansion-panel>
+      <v-expansion-panel style="max-width: 500px; margin-right: auto; margin-left: auto">
         <v-expansion-panel-content
+          expand-icon="add"
         >
         <div slot="header">Create a Token</div>
-        <v-card>
+        <v-card style="margin: 15px; max-width: 80%; margin-right: auto; margin-left: auto">
           <v-form ref="form" v-model="valid" lazy-validation>
             <p style="color:green" v-if="success">Token created successfully!</p>
             <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>

@@ -2,17 +2,31 @@
   <div>
     <Toolbar/>
     <v-container>
+      <h2 style="margin-bottom: 20px; color: black"><v-icon style="color: black">apps</v-icon>Home</h2>
+      <pie-chart label="Your Tokens" height="200px" class="bounceIn" legend="bottom" :donut="true" :data="tokenChart" v-if="tokenChart.length > 0"></pie-chart>
       <Create/>
     </v-container>
-    <ul>
-      <li v-if="item.balance && item.balance > 0" v-for="item in orderedTokens" :key="item.symbol">
-        <a :href="tokenUrl(item.symbol)">Token Name: {{item.name}}</a>
-        <br>
-        Balance: {{realBalance(item.balance, item.decimals)}} {{item.symbol}}
-        <br>
-        Issuer: {{$store.getters.getName(item.generator)}}
-      </li>
-    </ul>
+      <v-list two-line style="max-width: 500px; margin-left: auto; margin-right: auto; padding: 0px">
+        <template v-if="item.balance && item.balance > 0" v-for="item in orderedTokens">
+          <li class="token" :key="item.symbol">
+            <v-subheader :href="tokenUrl(item.symbol)">Token Name: {{item.name}}</v-subheader>
+            <v-list-tile-content style="text-align: center">
+            <v-list-tile-title style="margin-left: 20px">Balance: {{realBalance(item.balance, item.decimals)}} {{item.symbol}}</v-list-tile-title>
+            <v-list-tile-sub-title style="margin-bottom: 8px">Issuer: {{$store.getters.getName(item.generator)}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
+          </li>
+        </template>
+      </v-list>
+        <v-btn
+          color="yellow darken-2"
+          dark
+          bottom
+          right
+          fab
+        >
+          <v-icon color="black">add</v-icon>
+        </v-btn>
   </div>
 </template>
 
@@ -40,6 +54,18 @@ export default {
   computed: {
     orderedTokens: function() {
       return orderBy(this.tokens, ["balance"], ["desc", "asc"]);
+    },
+    tokenChart: function() {
+      var arr = [];
+      for(var i = 0; i<this.tokens.length; i++){
+        if(this.tokens[i].balance && this.tokens[i].balance > 0){
+          var token = []
+          token.push(this.tokens[i].symbol);
+          token.push(this.realBalance(this.tokens[i].balance, this.tokens[i].decimals))
+          arr.push(token)
+        }
+      }
+      return arr
     }
   },
   components: {
@@ -66,3 +92,42 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.bounceIn {
+  opacity: 0;
+  animation-name: bounceIn;
+  animation-duration: 450ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-delay: 0.3s;
+}
+.token {
+  -webkit-transition: all 0.7s; /* Safari */
+  transition: all 0.7s;
+}
+.token:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+@keyframes bounceIn{
+  0%{
+    opacity: 0;
+    transform: scale(0.3) translate3d(0,0,0);
+  }
+  50%{
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  80%{
+    opacity: 1;
+    transform: scale(0.89);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1) translate3d(0,0,0);
+  }
+}
+</style>
+

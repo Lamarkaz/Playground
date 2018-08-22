@@ -2,17 +2,19 @@
   <div>
     <v-progress-linear :indeterminate="true" height="5" color="yellow darken-2" style="margin: 0px"></v-progress-linear>
     <v-toolbar dark flat height="70">
-      <v-toolbar-title style="color: #fbc02d; font-weight: 700">Playground Wallet</v-toolbar-title>
+      <v-toolbar-title style="color: #fbc02d; font-weight: 700; font-size: 18px">
+        Playground Wallet
+      </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tooltip bottom>
+      <v-tooltip color="black" bottom>
         <v-btn dark icon slot="activator">
-          <v-icon>list_alt</v-icon>
+          <v-icon>apps</v-icon>
         </v-btn>
         <span>Home</span>
       </v-tooltip>
-      <v-tooltip bottom>
+      <v-tooltip color="black" bottom>
         <v-btn icon slot="activator">
-          <v-icon>notification_important</v-icon>
+          <v-icon>notifications_none</v-icon>
         </v-btn>
         <span>Notifcations</span>
       </v-tooltip>
