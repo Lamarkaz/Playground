@@ -8,7 +8,10 @@ import config from "../../config.json";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import VueLocalStorage from "vue-localstorage";
+import Gravatar from 'vue-gravatar';
 
+
+Vue.component('v-gravatar', Gravatar);
 Vue.use(Vuetify);
 Vue.use(VueLocalStorage, {
   bind: true //created computed members from your variable declarations

@@ -1,6 +1,6 @@
 <template>
     <v-layout class="authLayout">
-        <v-container class="Geninstr authOverlay">
+        <v-container class="Geninstr authOverlay" v-if="generated">
           <center>
             <div class="iconWrapper">
               <v-icon style="color: black; font-size: 39px">done_all</v-icon>
@@ -16,7 +16,7 @@
             </div>
           </v-card>
         </v-container>
-        <v-container class="authOverlay" style="display: none">
+        <v-container class="authOverlay" v-else>
             <v-flex style="margin-left: auto; margin-right: auto; margin-top: 30px; max-width: 480px">
                 <v-card class="authCard">
                     <v-alert v-if="error" color="error" icon="warning" value="true" style="margin-top: -45px">

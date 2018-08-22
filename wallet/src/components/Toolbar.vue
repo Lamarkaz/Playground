@@ -25,7 +25,7 @@
           <v-list>
             <v-list-tile>
               <v-list-tile-avatar>
-                <v-gravatar :hash="getHash($store.state.wallet.address)" class="vGravatar"/>
+                <v-gravatar :hash="gravatarHash" class="vGravatar"/>
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title style="color: #fbc02d">{{ $store.state.wallet.name }}</v-list-tile-title>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
+
 export default {
   data: () => ({
     dropdownBtns: [
@@ -59,23 +61,9 @@ export default {
       { title: 'Logout' }
     ],
   }),
-  methods: {
-    getHash: function (buffer, algo = "SHA-256") {
-      return crypto.subtle.digest(algo, buffer)
-        .then(hash => {
-          // here hash is an arrayBuffer, so we'll convert it to its hex version
-          let result = '';
-          const view = new DataView(hash);
-          for (let i = 0; i < hash.byteLength; i += 4) {
-            result += ('00000000' + view.getUint32(i).toString(16)).slice(-8);
-          }
-          return result;
-        });
-    }
-  },
   computed: {
     gravatarHash: function () {
-      return getHash($store.state.wallet.address)
+      return md5(this.$store.state.wallet.address)
     }
   }
 }
