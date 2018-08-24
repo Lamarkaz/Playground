@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
 
 * { padding: 0; margin: 0; }

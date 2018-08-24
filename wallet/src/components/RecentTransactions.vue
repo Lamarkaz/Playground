@@ -23,7 +23,7 @@
     </div>
 </div>
 </template>
-<script>
+<script scoped>
 import orderBy from 'lodash.orderby';
 import moment from "moment";
 import { BigNumber } from "bignumber.js";

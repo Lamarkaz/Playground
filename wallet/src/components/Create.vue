@@ -54,7 +54,7 @@
     </v-container>
 </template>
 
-<script>
+<script scoped>
 import { BigNumber } from "bignumber.js";
 
 export default {

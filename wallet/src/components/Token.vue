@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import { BigNumber } from "bignumber.js";
 import Send from "./Send.vue";
 import orderBy from "lodash.orderby";

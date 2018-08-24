@@ -41,7 +41,7 @@
         </v-expansion-panel>
 </template>
 
-<script>
+<script scoped>
 import { BigNumber } from "bignumber.js";
 
 export default {
