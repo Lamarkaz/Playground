@@ -239,7 +239,7 @@ export default {
               self.filename = $event.target.value.split("\\").pop();
             }
           } else {
-            alert("Error: Invalid wallet file");
+            swal("Error", "Invalid wallet file", "error");
           }
         };
       })(files[0]);
@@ -269,11 +269,13 @@ export default {
             self.ready = true;
           } else {
             self.ready = true;
-            alert(
+            self.authLoader = false;
+            swal("Error",
               "Your address is not yet whitelisted. Please send your address (" +
                 "0x" +
                 JSON.parse(self.json).address +
-                ") to contact@lamarkaz.com along with your name and organization."
+                ") to playground@lamarkaz.com along with your name and organization.",
+                "error"
             );
           }
         });
@@ -307,7 +309,7 @@ export default {
   },
   computed: {
     valid: function() {
-      return this.json !== "" && this.password.length > 7;
+      return this.json !== "" && Object.keys(this.json).length > 0 && this.password.length > 7;
     },
     pw_progress() {
       return Math.min(100, this.pw.length * 10);

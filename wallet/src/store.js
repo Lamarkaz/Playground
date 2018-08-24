@@ -21,9 +21,20 @@ var state = {
   wallet: {},
   names: {},
   namesArr: [],
-  addresses: {}
+  addresses: {},
+  notifications:0,
+  showNotifications:false
 };
 var mutations = {
+  NOTIFY: function(state) {
+    state.notifications++;
+  },
+  NOTIFICATIONS: function(state, value) {
+    state.showNotifications = value
+  },
+  CLEARNOTIFICATIONS: function(state) {
+    state.notifications = 0;
+  },
   UPSERTNAME: function(state, obj) {
     state.names[obj.address] = obj.name;
     state.addresses[obj.name] = obj.address;
@@ -47,7 +58,6 @@ var mutations = {
 };
 var actions = {
   bootstrap: function(context) {
-    setTimeout(function() {
       // Get all names
       whitelistContract.events.Whitelisted({ fromBlock: 0 }, function(
         err,
@@ -65,7 +75,6 @@ var actions = {
             }
           });
       });
-    }, 500);
   },
   login: function(context, wallet) {
     // Get name and register wallet
@@ -91,7 +100,7 @@ var getters = {
     } else if(typeof state.names[address] != 'undefined') {
       return state.names[address]
     } else {
-      return address
+      return 'Unknown (' + address + ')'
     }
   }
 }

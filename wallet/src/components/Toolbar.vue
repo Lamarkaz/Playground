@@ -7,20 +7,21 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip color="black" bottom>
-        <v-btn dark icon slot="activator" @click="$router.push('/')">
-          <v-icon>attach_money</v-icon>
+        <v-btn dark icon slot="activator" @click="$router.push('/'); $store.commit('NOTIFICATIONS', false)">
+          <v-icon :color="homeIcon">attach_money</v-icon>
         </v-btn>
         <span>Tokens</span>
       </v-tooltip>
-      <!-- 
       <v-tooltip color="black" bottom>
-        <v-btn icon slot="activator">
-          <v-icon>notifications_none</v-icon>
+        <v-btn icon slot="activator" @click="$store.commit('CLEARNOTIFICATIONS'); $store.commit('NOTIFICATIONS', !$store.state.showNotifications)">
+        <v-badge :value="$store.state.notifications" color="red">
+        <span slot="badge">{{$store.state.notifications}}</span>
+          <v-icon :color="notifyIcon">notifications_none</v-icon>
+          </v-badge>
         </v-btn>
         <span>Notifcations</span>
       </v-tooltip>
-      -->
-      <v-menu dark bottom open-on-hover :close-on-content-click="false" transition="slide-y-transition">
+      <v-menu dark bottom :close-on-content-click="false" transition="slide-y-transition">
         <v-btn icon slot="activator">
           <v-icon>more_vert</v-icon>
         </v-btn>
@@ -64,6 +65,21 @@ export default {
   computed: {
     gravatarHash: function () {
       return md5(this.$store.state.wallet.address)
+    },
+    homeIcon: function () {
+      if(this.$store.state.showNotifications) {
+        return 'white'
+      }else{
+        return 'yellow darken-2'
+      }
+    },
+    notifyIcon: function () {
+      if(this.$store.state.showNotifications) {
+        return 'yellow darken-2'
+      }
+      else {
+        return 'white'
+      }
     }
   }
 }

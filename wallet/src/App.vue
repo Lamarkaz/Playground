@@ -3,7 +3,8 @@
     <div id="app">
       <div v-if="typeof $store.state.wallet.address != 'undefined'">
         <Toolbar/>
-        <router-view/>
+        <RecentTransactions onlyUser v-show='$store.state.showNotifications'/>
+        <router-view v-show="!$store.state.showNotifications"/>
       </div>
       <Auth v-else/>
     </div>
@@ -13,10 +14,12 @@
 <script>
 import Auth from "./components/Auth.vue";
 import Toolbar from "./components/Toolbar.vue";
+import RecentTransactions from "./components/RecentTransactions.vue"
 export default {
   components: {
     Auth,
-    Toolbar
+    Toolbar,
+    RecentTransactions
   },
   created() {
     var self = this;
@@ -27,7 +30,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
 
 * { padding: 0; margin: 0; }

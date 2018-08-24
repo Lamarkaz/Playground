@@ -4,8 +4,6 @@
             >
             <div slot="header">Send {{token.symbol}}</div>
                 <v-form ref="form" v-model="valid" style="margin: 15px; max-width: 80%; margin-right: auto; margin-left: auto">
-                    <p style="color:green" v-if="success">Tokens sent successfully!</p>
-                    <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>
                     <v-autocomplete
                     :items="$store.state.namesArr"
                     v-model="select"
@@ -23,7 +21,7 @@
                     <v-text-field
                     v-model="amount"
                     :counter="100"
-                    label="Enter number of tokens"
+                    label="Enter amount of tokens"
                     :rules="amountRules"
                     required
                     ></v-text-field>
@@ -41,15 +39,14 @@
         </v-expansion-panel>
 </template>
 
-<script>
+<script scoped>
 import { BigNumber } from "bignumber.js";
+import swal from 'sweetalert'
 
 export default {
   props: ["token", "balance"],
   data: () => ({
     select: undefined,
-    success: false,
-    failure: false,
     valid: true,
     amount: "",
     loading: false,
@@ -78,15 +75,13 @@ export default {
             gas: 4000000
           });
         transfer.on("receipt", function() {
-          self.clear();
-          self.failure = false;
-          self.success = true;
           self.loading = false;
+          swal("Success!", "You have sent " + self.amount + " " + self.token.symbol + " to " + self.select,"success")
+          self.clear();
         });
         transfer.on("error", function() {
-          self.failure = true;
-          self.success = false;
           self.loading = false;
+          swal("Error", "Something went wrong. Please try again","error")
         });
       }
     },

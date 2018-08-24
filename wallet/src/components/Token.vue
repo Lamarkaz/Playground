@@ -5,16 +5,16 @@
         <h3 style="color: black; font-size: 18px">{{prettyBalance}} </h3>
         <h1 style="color: black; font-size: 32px">{{$route.params.symbol}}</h1>
       </div>
-      Token Name: {{token.name}}
+      {{token.name}}
       <br>
-      Issuer: {{$store.state.names[token.generator]}}
+      Issued by {{$store.getters.getName(token.generator)}}
       <Send :token="token" :balance="balance" style="margin-top: 15px"/>
       <br>
       <v-list two-line style="margin-left: auto; margin-right: auto; padding: 0px; word-break: 10">
         <template v-for="item in orderedTxs">
             <li class="token" :key="item.hash">
               <div v-if="$store.getters.getName(item.sender) !=  'Token Mint'">
-                <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px">
+                <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px; text-align: left; padding-left: 25px">
                   <span>{{$store.getters.getName(item.sender)}} </span>
                   <span></span>
                   sent
@@ -22,18 +22,18 @@
                   to
                   <span>{{$store.getters.getName(item.recipient)}} </span>
                   <br/>
-                  <span>{{item.timestamp}}</span>
+                  <span><v-icon class="timeIcon">access_time</v-icon>{{item.timestamp}}</span>
                 </v-list-tile-sub-title>
                 <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
               </div>
 
               <div v-if="$store.getters.getName(item.sender) ===  'Token Mint'">
-                <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px">{{item.name}}
+                <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px; text-align: left; padding-left: 25px">{{item.name}}
                   <span>{{$store.getters.getName(item.recipient)}} </span>
                   created
                   <span>a new token called {{$route.params.symbol}} </span>
                   <br/>
-                  <span>{{item.timestamp}}</span>
+                  <span><v-icon class="timeIcon">access_time</v-icon>{{item.timestamp}}</span>
                 </v-list-tile-sub-title>
                 <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
               </div>
@@ -47,12 +47,12 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import { BigNumber } from "bignumber.js";
 import Send from "./Send.vue";
 import orderBy from "lodash.orderby";
-import moment from "moment";
 import numeral from "numeral";
+
 export default {
   name: "home",
   data() {
@@ -102,7 +102,7 @@ export default {
                   recipient: event.returnValues.recipient,
                   blockNumber: event.blockNumber,
                   unixTimestamp: block.timestamp,
-                  timestamp: moment(block.timestamp * 1000)
+                  timestamp: self.$dayjs(block.timestamp * 1000)
                     .startOf("second")
                     .fromNow(),
                   value: new BigNumber(event.returnValues.value)
@@ -134,7 +134,7 @@ export default {
           var newArr = [];
           for (var i = 0; i < self.txs.length; i++) {
             var tx = self.txs[i];
-            tx.timestamp = moment(tx.unixTimestamp * 1000)
+            tx.timestamp = self.$dayjs(tx.unixTimestamp * 1000)
               .startOf("second")
               .fromNow();
             newArr.push(tx);
@@ -144,7 +144,7 @@ export default {
       });
     }
   },
-  created() {
+  mounted() {
     this.getToken()
   },
   computed: {
@@ -183,5 +183,9 @@ export default {
   margin-top: 15px;
   margin-bottom: 15px;
   padding-top: 45px;
+}
+.timeIcon {
+  font-size: 14px;
+  margin-right: 5px;
 }
 </style>
