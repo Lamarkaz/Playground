@@ -11,7 +11,7 @@
           <v-card style="padding: 25px">
             <div class="instrText">
               <div class="txt">1. Keep the downloaded identity file on your device. Make sure you keep a few backups. Without this file, you won't be able to access your account.</div>
-              <div class="txt">2. Send an email to contact@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.</div>
+              <div class="txt">2. Send an email to playground@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.</div>
               <div class="txt">3. Wait for an email response then come back to this webpage to login.</div>
             </div>
           </v-card>
@@ -239,7 +239,7 @@ export default {
               self.filename = $event.target.value.split("\\").pop();
             }
           } else {
-            alert("Error: Invalid wallet file");
+            swal("Error", "Invalid wallet file", "error");
           }
         };
       })(files[0]);
@@ -269,11 +269,13 @@ export default {
             self.ready = true;
           } else {
             self.ready = true;
-            alert(
+            self.authLoader = false;
+            swal("Error",
               "Your address is not yet whitelisted. Please send your address (" +
                 "0x" +
                 JSON.parse(self.json).address +
-                ") to contact@lamarkaz.com along with your name and organization."
+                ") to playground@lamarkaz.com along with your name and organization.",
+                "error"
             );
           }
         });
@@ -307,7 +309,7 @@ export default {
   },
   computed: {
     valid: function() {
-      return this.json !== "" && this.password.length > 7;
+      return this.json !== "" && Object.keys(this.json).length > 0 && this.password.length > 7;
     },
     pw_progress() {
       return Math.min(100, this.pw.length * 10);

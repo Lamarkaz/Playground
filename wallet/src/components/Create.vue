@@ -7,8 +7,6 @@
         <div slot="header">Create a Token</div>
         <v-card style="margin: 15px; max-width: 80%; margin-right: auto; margin-left: auto">
           <v-form ref="form" v-model="valid">
-            <p style="color:green" v-if="success">Token created successfully!</p>
-            <p style="color:red" v-if="failure">Something went wrong. Please try again.</p>
             <v-text-field
             v-model="name"
             :rules="nameRules"
@@ -56,12 +54,11 @@
 
 <script scoped>
 import { BigNumber } from "bignumber.js";
+import swal from 'sweetalert'
 
 export default {
   data: () => ({
-    success: false,
     loading: false,
-    failure: false,
     valid: false,
     name: "Example Coin",
     symbol: "",
@@ -111,15 +108,13 @@ export default {
             gas: 4000000
           });
         generate.on("receipt", function() {
-          self.clear();
-          self.success = true;
-          self.failure = false;
           self.loading = false;
+          swal("Success!", "You have successfully issued " + self.supply + " " + self.symbol + "s", "success")
+          self.clear();
         });
         generate.on("error", function() {
-          self.failure = true;
-          self.success = false;
           self.loading = false;
+          swal("Error", "Something went wrong. Please try again", "error")
         });
       }
     },

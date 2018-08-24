@@ -11,6 +11,8 @@ import VueLocalStorage from "vue-localstorage";
 import Gravatar from 'vue-gravatar';
 import VueChartkick from 'vue-chartkick'
 import Chart from 'chart.js'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 
 Vue.component('v-gravatar', Gravatar);
@@ -19,9 +21,11 @@ Vue.use(VueLocalStorage, {
   bind: true //created computed members from your variable declarations
 });
 Vue.use(VueChartkick, {adapter: Chart})
+dayjs.extend(relativeTime)
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$dayjs = dayjs
 Vue.prototype.$web3 = new Web3(config.RPC);
 Vue.prototype.$contract = new Vue.prototype.$web3.eth.Contract(
   require("../../contracts/TokenGenerator.json"),
