@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "./registerServiceWorker";
+// import "./registerServiceWorker";
 import Web3 from "web3";
 import config from "../../config.json";
 import Vuetify from "vuetify";
