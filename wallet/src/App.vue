@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
 
 * { padding: 0; margin: 0; }
@@ -60,5 +60,14 @@ body {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+.swal-modal {
+  font-family: 'Raleway', sans-serif !important;
+}
+.swal-button {
+  background-color: #fbc02d;
+  color: black;
+  border: none;
+  text-shadow: none;
 }
 </style>

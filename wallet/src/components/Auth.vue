@@ -55,7 +55,7 @@
                         counter
                         required
                       ></v-text-field>
-                      <v-btn :disabled="!valid" class="authBtn" :loading="authLoader" style="width: 100%; box-shadow: none" v-on:click="authenticate">
+                      <v-btn :disabled="!valid" class="authBtn" color="grey lighten-3" :loading="authLoader" style="width: 100%; box-shadow: none" v-on:click="authenticate">
                           <v-icon style="font-size: 20px; padding-right: 10px;">vpn_key</v-icon>Authenticate
                       </v-btn>
                       <div class="dividerStyle"></div>

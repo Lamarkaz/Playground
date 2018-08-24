@@ -1,10 +1,13 @@
 <template>
   <div>
     <div v-if="token.totalSupply > 0" style="margin-top: 15px; max-width: 600px; margin-left: auto; margin-right: auto">
-      <div class="tokenBalance">
-        <h3 style="color: black; font-size: 18px">{{prettyBalance}} </h3>
-        <h1 style="color: black; font-size: 32px">{{$route.params.symbol}}</h1>
-      </div>
+      <v-tooltip bottom color="black">
+        <div class="tokenBalance" slot="activator">
+          <h3 style="color: black; font-size: 18px">{{prettyBalance}} </h3>
+          <h1 style="color: black; font-size: 32px">{{$route.params.symbol}}</h1>
+        </div>
+        <span>{{balance}} {{$route.params.symbol}}</span>
+      </v-tooltip>
       {{token.name}}
       <br>
       Issued by {{$store.getters.getName(token.generator)}}
@@ -158,7 +161,6 @@ export default {
       else {
         return numeral(this.balance).format('0.00a');
       }
-      
     }
   },
   components: {
@@ -183,6 +185,7 @@ export default {
   margin-top: 15px;
   margin-bottom: 15px;
   padding-top: 45px;
+  cursor: pointer;
 }
 .timeIcon {
   font-size: 14px;

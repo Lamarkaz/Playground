@@ -14,7 +14,7 @@
       </v-tooltip>
       <v-tooltip color="black" bottom>
         <v-btn icon slot="activator" @click="$store.commit('CLEARNOTIFICATIONS'); $store.commit('NOTIFICATIONS', !$store.state.showNotifications)">
-        <v-badge :value="$store.state.notifications" color="red">
+        <v-badge overlap :value="$store.state.notifications" color="red">
         <span slot="badge">{{$store.state.notifications}}</span>
           <v-icon :color="notifyIcon">notifications_none</v-icon>
           </v-badge>

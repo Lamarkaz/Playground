@@ -8,14 +8,17 @@
       <v-list two-line style="max-width: 500px; margin-left: auto; margin-right: auto; padding: 0px">
         <template v-if="item.balance && item.balance > 0" v-for="item in orderedTokens">
           <a :href="tokenUrl(item.symbol)" :key="item.symbol" style="text-decoration: none">
-            <li class="token">
-              <v-subheader>{{item.name}}</v-subheader>
-              <v-list-tile-content>
-              <v-list-tile-title style="margin-left: 23px; color: black">{{realBalance(item.balance, item.decimals)}} {{item.symbol}}</v-list-tile-title>
-              <v-list-tile-sub-title style="margin-bottom: 8px; margin-left: 23px">Issued by {{$store.getters.getName(item.generator)}}</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
-            </li>
+            <v-tooltip left color="black">
+              <li class="token" slot="activator">
+                <v-subheader>{{item.name}}</v-subheader>
+                <v-list-tile-content>
+                <v-list-tile-title style="margin-left: 23px; color: black">{{realBalance(item.balance, item.decimals)}} {{item.symbol}}</v-list-tile-title>
+                <v-list-tile-sub-title style="margin-bottom: 8px; margin-left: 23px">Issued by {{$store.getters.getName(item.generator)}}</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
+              </li>
+              <span>{{ uglyBal(item.balance, item.decimals) }} {{item.symbol}}</span>
+            </v-tooltip>
           </a>
         </template>
       </v-list>
@@ -46,6 +49,9 @@ export default {
       else {
         return new numeral(BigNumber(balance).div(10 ** decimals).toString(10)).format('0.000a');
       }
+    },
+    uglyBal: function(balance, decimals) {
+      return new BigNumber(balance).div(10 ** decimals).toNumber()
     }
   },
   computed: {
@@ -112,7 +118,6 @@ export default {
   background-color: #eee;
   cursor: pointer;
 }
-
 @keyframes bounceIn{
   0%{
     opacity: 0;

@@ -1,5 +1,6 @@
 <template>
   <v-container style="max-width: 600px">
+    <h2 style="margin-bottom: 20px; color: black"><v-icon style="color: black">notifications_none</v-icon>Notifications</h2>
     <v-list two-line style="margin-left: auto; margin-right: auto; padding: 0px; word-break: 10">
       <template v-for="item in orderedEvents">
           <li class="token" :key="item.hash">
@@ -80,7 +81,7 @@ export default {
                   self.$store.commit('NOTIFY')
                 }
                 if(newEvent.timestamp === "a few seconds ago") {
-                  newEvent.background = 'background:#fc7676'
+                  newEvent.background = 'background:#ffc6c6'
                 } else {
                   newEvent.background = 'background:white'
                 }
@@ -124,7 +125,7 @@ export default {
                 self.$store.commit('NOTIFY')
               }
               if(tx.timestamp === "a few seconds ago") {
-                tx.background = 'background:#fc7676'
+                tx.background = 'background:#ffc6c6'
               } else {
                 tx.background = 'background:white'
               }
@@ -146,7 +147,7 @@ export default {
             .startOf("second")
             .fromNow();
         if(event.timestamp === "a few seconds ago") {
-          event.background = 'background:#fc7676'
+          event.background = 'background:#ffc6c6'
         } else {
           event.background = 'background:white'
         }
