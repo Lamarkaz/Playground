@@ -107,7 +107,7 @@ export default {
       ]
     }
     self.$contract.events.Transfer(options, function(err, event) {
-      if (!err) {
+      if (!err && (event.returnValues.sender === self.$store.state.wallet.address || event.returnValues.recipient === self.$store.state.wallet.address)) {
         self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
           self.$contract.methods
             .getToken(event.returnValues.symbol)
