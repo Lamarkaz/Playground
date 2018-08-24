@@ -22,10 +22,7 @@ export default {
     RecentTransactions
   },
   created() {
-    var self = this;
-    window.onload = function() {
-      self.$store.dispatch("bootstrap");
-    };
+    this.$store.dispatch("bootstrap");
   }
 };
 </script>
