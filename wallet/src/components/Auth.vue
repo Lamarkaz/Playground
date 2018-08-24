@@ -11,7 +11,7 @@
           <v-card style="padding: 25px">
             <div class="instrText">
               <div class="txt">1. Keep the downloaded identity file on your device. Make sure you keep a few backups. Without this file, you won't be able to access your account.</div>
-              <div class="txt">2. Send an email to contact@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.</div>
+              <div class="txt">2. Send an email to playground@lamarkaz.com with your newly generated address (0x{{tempWallet.address}}), your name and your organization's name.</div>
               <div class="txt">3. Wait for an email response then come back to this webpage to login.</div>
             </div>
           </v-card>
