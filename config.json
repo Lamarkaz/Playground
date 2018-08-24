@@ -1,6 +1,6 @@
 {
-    "URL":"http://playground.lamarkaz.com",
-    "RPC":"ws://playground.lamarkaz.com:8450",
+    "URL":"https://playground.lamarkaz.com",
+    "RPC":"wss://playground.lamarkaz.com:8451",
     "tokenGeneratorContract":"0x0000000000000000000000000000000000000006",
     "whitelistContract":"0x0000000000000000000000000000000000000005",
     "port": 3000
