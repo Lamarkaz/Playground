@@ -10,29 +10,29 @@
       </v-tooltip>
       {{token.name}}
       <br>
-      Issued by {{$store.getters.getName(token.generator)}}
+      Issued by {{getName(token.generator)}}
       <Send :token="token" :balance="balance" style="margin-top: 15px"/>
       <br>
       <v-list two-line style="margin-left: auto; margin-right: auto; padding: 0px; word-break: 10">
         <template v-for="item in orderedTxs">
             <li class="token" :key="item.hash">
-              <div v-if="$store.getters.getName(item.sender) !=  'Token Mint'">
+              <div v-if="getName(item.sender) !=  'Token Mint'">
                 <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px; text-align: left; padding-left: 25px">
-                  <span>{{$store.getters.getName(item.sender)}} </span>
+                  <span>{{getName(item.sender)}} </span>
                   <span></span>
                   sent
                   <span>{{item.value}} {{$route.params.symbol}} </span>
                   to
-                  <span>{{$store.getters.getName(item.recipient)}} </span>
+                  <span>{{getName(item.recipient)}} </span>
                   <br/>
                   <span><v-icon class="timeIcon">access_time</v-icon>{{item.timestamp}}</span>
                 </v-list-tile-sub-title>
                 <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
               </div>
 
-              <div v-if="$store.getters.getName(item.sender) ===  'Token Mint'">
+              <div v-if="getName(item.sender) ===  'Token Mint'">
                 <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px; text-align: left; padding-left: 25px">{{item.name}}
-                  <span>{{$store.getters.getName(item.recipient)}} </span>
+                  <span>{{getName(item.recipient)}} </span>
                   created
                   <span>a new token called {{$route.params.symbol}} </span>
                   <br/>

@@ -6,11 +6,11 @@
           <li class="token" :key="item.hash">
             <div :style="item.background" v-if="item.type === 'transfer' && item.sender !=  '0x0000000000000000000000000000000000000000'">
               <v-list-tile-sub-title style="height: 80px; font-weight: 500; padding-top: 20px; text-align: left; padding-left: 25px">
-                <span>{{$store.getters.getName(item.sender)}} </span>
+                <span>{{getName(item.sender)}} </span>
                 sent
                 <span>{{item.value}} {{item.symbol}} </span>
                 to
-                <span>{{$store.getters.getName(item.recipient)}} </span>
+                <span>{{getName(item.recipient)}} </span>
                 <br/>
                 <span><v-icon class="timeIcon">access_time</v-icon>{{item.timestamp}}</span>
               </v-list-tile-sub-title>
@@ -19,7 +19,7 @@
 
             <div v-if="item.type === 'transfer' && item.sender ===  '0x0000000000000000000000000000000000000000'">
               <v-list-tile-sub-title style="height: 90px; font-weight: 500; padding-top: 20px; text-align: left; padding-left: 25px">{{item.name}}
-                <span>{{$store.getters.getName(item.recipient)}} </span>
+                <span>{{getName(item.recipient)}} </span>
                 created
                 <span>a new token called {{item.symbol}} </span>
                 <br/>

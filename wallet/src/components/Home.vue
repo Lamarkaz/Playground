@@ -13,7 +13,7 @@
                 <v-subheader>{{item.name}}</v-subheader>
                 <v-list-tile-content>
                 <v-list-tile-title style="margin-left: 23px; color: black">{{realBalance(item.balance, item.decimals)}} {{item.symbol}}</v-list-tile-title>
-                <v-list-tile-sub-title style="margin-bottom: 8px; margin-left: 23px">Issued by {{$store.getters.getName(item.generator)}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title style="margin-bottom: 8px; margin-left: 23px">Issued by {{getName(item.generator)}}</v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-divider style="margin: 0px auto; max-width: 80%; margin-right: auto; margin-left: auto"></v-divider>
               </li>
