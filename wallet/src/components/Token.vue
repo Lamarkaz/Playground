@@ -149,7 +149,10 @@ export default {
     }
   },
   created() {
-    this.getToken()
+    var self = this;
+    this.$web3.eth.net.isListening().then(function(){
+      self.getToken()
+    })
   },
   computed: {
     ...mapGetters([

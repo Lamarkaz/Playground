@@ -69,8 +69,9 @@ export default {
   },
   created() {
     var self = this;
-    if(!this.onlyUser){
-      this.$whitelistContract.events.Whitelisted({fromBlock: 0}, function(err, event) {
+    this.$web3.eth.net.isListening().then(function(){
+    if(!self.onlyUser){
+      self.$whitelistContract.events.Whitelisted({fromBlock: 0}, function(err, event) {
             if (!err) {
           self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
                 var newEvent = {
@@ -99,13 +100,13 @@ export default {
     var options = {
       fromBlock:0
     };
-    if(this.onlyUser) {
+    if(self.onlyUser) {
       options.filter = [
-        { sender: this.$store.state.wallet.address },
-        { recipient: this.$store.state.wallet.address }
+        { sender: self.$store.state.wallet.address },
+        { recipient: self.$store.state.wallet.address }
       ]
     }
-    this.$contract.events.Transfer(options, function(err, event) {
+    self.$contract.events.Transfer(options, function(err, event) {
       if (!err) {
         self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
           self.$contract.methods
@@ -161,6 +162,7 @@ export default {
         }
         self.events = newArr;
     }, 60000);
+    })
   }
 };
 </script>

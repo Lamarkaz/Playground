@@ -197,7 +197,10 @@ export default {
     var wallet = this.$localStorage.get("wallet", null);
     if (wallet != null) {
       this.$web3.eth.accounts.wallet.add(wallet);
-      this.$store.dispatch("login", wallet);
+      var self = this;
+      this.$web3.eth.net.isListening(function(){
+        self.$store.dispatch("login", wallet);
+      })
     }
   },
   methods: {

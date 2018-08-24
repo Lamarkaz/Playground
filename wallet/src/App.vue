@@ -22,7 +22,10 @@ export default {
     RecentTransactions
   },
   created() {
-    this.$store.dispatch("bootstrap");
+    var self = this;
+    this.$web3.eth.net.isListening().then(function(){
+      self.$store.dispatch("bootstrap");
+    })
   }
 };
 </script>

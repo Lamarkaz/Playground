@@ -88,7 +88,7 @@ export default {
   created() {
     var self = this;
     // Get all tokens
-    this.$contract.events.NewToken({ fromBlock: 0 }, function(err, event) {
+    this.$web3.eth.net.isListening().then(function(){self.$contract.events.NewToken({ fromBlock: 0 }, function(err, event) {
       if (
         // Reject tokens with symbols that are not 100% uppercase. This frontend validation helps keep unique symbols.
         event.returnValues.symbol === event.returnValues.symbol.toUpperCase()
@@ -101,7 +101,7 @@ export default {
               self.tokens.push(result);
           });
       }
-    });
+    })});
   }
 };
 </script>
