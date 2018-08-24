@@ -44,6 +44,8 @@
 <script scoped>
 import orderBy from 'lodash.orderby';
 import { BigNumber } from "bignumber.js";
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     onlyUser: {
@@ -57,6 +59,10 @@ export default {
     };
   },
   computed:{
+      ...mapGetters([
+      'getName'
+      // ...
+      ]),
       orderedEvents:function(){
         return orderBy(this.events, ["blockNumber"], ["desc", "asc"]);
       }

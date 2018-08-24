@@ -30,6 +30,7 @@ import Create from "./Create.vue";
 import { BigNumber } from "bignumber.js";
 import orderBy from "lodash.orderby";
 import numeral from 'numeral';
+import { mapGetters } from 'vuex'
 
 export default {
   name: "home",
@@ -55,6 +56,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'getName'
+      // ...
+    ]),
     orderedTokens: function() {
       var arr = [];
       for (var i = 0; i < this.tokens.length; i++){

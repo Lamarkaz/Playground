@@ -7,10 +7,6 @@ import { BigNumber } from "bignumber.js";
 Vue.use(Vuex);
 
 var web3 = new Web3(config.RPC);
-var contract = new web3.eth.Contract(
-  require("../../contracts/TokenGenerator.json"),
-  config.tokenGeneratorContract
-);
 var whitelistContract = new web3.eth.Contract(
   require("../../contracts/Whitelist.json"),
   config.whitelistContract
@@ -92,7 +88,7 @@ var actions = {
 };
 
 var getters = {
-  getName: (state) => (address) =>{
+  getName: (state) => (address) => {
     if(address.toUpperCase() === state.wallet.address.toUpperCase()) {
       return "You"
     } else if(address === "0x0000000000000000000000000000000000000000") {

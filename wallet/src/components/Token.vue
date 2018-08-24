@@ -55,6 +55,7 @@ import { BigNumber } from "bignumber.js";
 import Send from "./Send.vue";
 import orderBy from "lodash.orderby";
 import numeral from "numeral";
+import { mapGetters } from 'vuex'
 
 export default {
   name: "home",
@@ -151,6 +152,10 @@ export default {
     this.getToken()
   },
   computed: {
+    ...mapGetters([
+      'getName'
+      // ...
+    ]),
     orderedTxs: function() {
       return orderBy(this.txs, ["blockNumber"], ["desc", "asc"]);
     },
