@@ -67,7 +67,7 @@ export default {
         return orderBy(this.events, ["blockNumber"], ["desc", "asc"]);
       }
   },
-  mounted() {
+  created() {
     var self = this;
     if(!this.onlyUser){
       this.$whitelistContract.events.Whitelisted({fromBlock: 0}, function(err, event) {

@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "./registerServiceWorker";
+// import "./registerServiceWorker";
 import Web3 from "web3";
 import config from "../../config.json";
 import Vuetify from "vuetify";
@@ -23,7 +23,7 @@ Vue.use(VueLocalStorage, {
 Vue.use(VueChartkick, {adapter: Chart})
 dayjs.extend(relativeTime)
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 Vue.prototype.$dayjs = dayjs
 Vue.prototype.$web3 = new Web3(config.RPC);

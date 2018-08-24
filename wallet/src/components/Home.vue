@@ -85,7 +85,7 @@ export default {
   components: {
     Create
   },
-  mounted() {
+  created() {
     var self = this;
     // Get all tokens
     this.$contract.events.NewToken({ fromBlock: 0 }, function(err, event) {
