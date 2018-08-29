@@ -409,7 +409,6 @@ input[type="file"] {
   font-weight: 700;
   font-size: 14px;
   margin-top: 20px;
-  color: white;
   box-shadow: none;
   height: 55px;
   border-radius: 999px;
