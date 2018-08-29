@@ -14,7 +14,7 @@
 <script>
 import Auth from "./components/Auth.vue";
 import Toolbar from "./components/Toolbar.vue";
-import RecentTransactions from "./components/RecentTransactions.vue"
+import RecentTransactions from "./components/RecentTransactions.vue";
 export default {
   components: {
     Auth,
@@ -23,9 +23,9 @@ export default {
   },
   created() {
     var self = this;
-    this.$web3.eth.net.isListening().then(function(){
+    this.$web3.eth.net.isListening().then(function() {
       self.$store.dispatch("bootstrap");
-    })
+    });
   }
 };
 </script>
@@ -33,11 +33,20 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500");
 
-* { padding: 0; margin: 0; }
-html, body, #fullheight {
+* {
+  padding: 0;
+  margin: 0;
+}
+html,
+body,
+#fullheight {
   min-height: 100% !important;
   height: 100%;
-  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%) !important;
+  background-image: linear-gradient(
+    to top,
+    #e6e9f0 0%,
+    #eef1f5 100%
+  ) !important;
 }
 #app {
   font-family: "Raleway", sans-serif;
@@ -62,7 +71,7 @@ body {
   color: #42b983;
 }
 .swal-modal {
-  font-family: 'Raleway', sans-serif !important;
+  font-family: "Raleway", sans-serif !important;
 }
 .swal-button {
   background-color: #fbc02d;

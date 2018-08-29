@@ -20,7 +20,7 @@
                     <p style="color:red" v-if="!nameIsCorrect && select">This recipient name is not registered.</p>
                     <v-text-field
                     v-model="amount"
-                    :counter="100"
+                    :counter="20"
                     label="Enter amount of tokens"
                     :rules="amountRules"
                     required
@@ -41,7 +41,7 @@
 
 <script scoped>
 import { BigNumber } from "bignumber.js";
-import swal from 'sweetalert'
+import swal from "sweetalert";
 
 export default {
   props: ["token", "balance"],
@@ -76,12 +76,21 @@ export default {
           });
         transfer.on("receipt", function() {
           self.loading = false;
-          swal("Success!", "You have sent " + self.amount + " " + self.token.symbol + " to " + self.select,"success")
+          swal(
+            "Success!",
+            "You have sent " +
+              self.amount +
+              " " +
+              self.token.symbol +
+              " to " +
+              self.select,
+            "success"
+          );
           self.clear();
         });
         transfer.on("error", function() {
           self.loading = false;
-          swal("Error", "Something went wrong. Please try again","error")
+          swal("Error", "Something went wrong. Please try again", "error");
         });
       }
     },

@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Web3 from "web3";
 import config from "../../config.json";
-import { BigNumber } from "bignumber.js";
 
 Vue.use(Vuex);
 
@@ -18,15 +17,15 @@ var state = {
   names: {},
   namesArr: [],
   addresses: {},
-  notifications:0,
-  showNotifications:false
+  notifications: 0,
+  showNotifications: false
 };
 var mutations = {
   NOTIFY: function(state) {
     state.notifications++;
   },
   NOTIFICATIONS: function(state, value) {
-    state.showNotifications = value
+    state.showNotifications = value;
   },
   CLEARNOTIFICATIONS: function(state) {
     state.notifications = 0;
@@ -54,23 +53,23 @@ var mutations = {
 };
 var actions = {
   bootstrap: function(context) {
-      // Get all names
-      whitelistContract.events.Whitelisted({ fromBlock: 0 }, function(
-        err,
-        event
-      ) {
-        whitelistContract.methods
-          .whitelist(event.returnValues.user)
-          .call()
-          .then(function(result) {
-            if (result.whitelisted) {
-              context.commit("UPSERTNAME", {
-                address: event.returnValues.user,
-                name: result.name
-              });
-            }
-          });
-      });
+    // Get all names
+    whitelistContract.events.Whitelisted({ fromBlock: 0 }, function(
+      err,
+      event
+    ) {
+      whitelistContract.methods
+        .whitelist(event.returnValues.user)
+        .call()
+        .then(function(result) {
+          if (result.whitelisted) {
+            context.commit("UPSERTNAME", {
+              address: event.returnValues.user,
+              name: result.name
+            });
+          }
+        });
+    });
   },
   login: function(context, wallet) {
     // Get name and register wallet
@@ -88,18 +87,18 @@ var actions = {
 };
 
 var getters = {
-  getName: (state) => (address) => {
-    if(address.toUpperCase() === state.wallet.address.toUpperCase()) {
-      return "You"
-    } else if(address === "0x0000000000000000000000000000000000000000") {
-      return "Token Mint"
-    } else if(typeof state.names[address] != 'undefined') {
-      return state.names[address]
+  getName: state => address => {
+    if (address.toUpperCase() === state.wallet.address.toUpperCase()) {
+      return "You";
+    } else if (address === "0x0000000000000000000000000000000000000000") {
+      return "Token Mint";
+    } else if (typeof state.names[address] != "undefined") {
+      return state.names[address];
     } else {
-      return 'Unknown (' + address + ')'
+      return "Unknown (" + address + ")";
     }
   }
-}
+};
 
 export default new Vuex.Store({
   state,

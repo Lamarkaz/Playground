@@ -18,7 +18,7 @@
             v-model="symbol"
             @input="upperAndValidate"
             :rules="symbolRules"
-            :counter="3"
+            :counter="4"
             label="Token Symbol"
             required
             ></v-text-field>
@@ -33,7 +33,7 @@
             <v-text-field
             v-model="supply"
             :rules="supplyRules"
-            :counter="100"
+            :counter="20"
             label="Total Token Supply"
             required
             ></v-text-field>
@@ -54,7 +54,7 @@
 
 <script scoped>
 import { BigNumber } from "bignumber.js";
-import swal from 'sweetalert'
+import swal from "sweetalert";
 
 export default {
   data: () => ({
@@ -69,11 +69,13 @@ export default {
       v => !!v || "Token name is required",
       v =>
         (v && v.length <= 20) || "Token name must be less than 20 characters",
-      v => (v && v.length >= 3) || "Token name must be longer than 3 characters"
+      v => (v && v.length >= 4) || "Token name must be longer than 4 characters"
     ],
     symbolRules: [
       v => !!v || "Token symbol is required",
-      v => (v && v.length === 3) || "Token symbol must be equal to 3 characters"
+      v =>
+        (v && v.length >= 3 && v.length <= 4) ||
+        "Token symbol must be 3 or 4 characters long"
     ],
     decimalRules: [
       v => !!v || "Token decimals is required",
@@ -85,8 +87,8 @@ export default {
     supplyRules: [
       v => !!v || "Token supply is required",
       v =>
-        (v && v.length <= 100) ||
-        "Token supply must be smaller than or equal to 100 characters",
+        (v && v.length <= 20) ||
+        "Token supply must be smaller than or equal to 20 characters",
       v => (v && !isNaN(v)) || "Token supply must be a number"
     ]
   }),
@@ -109,12 +111,20 @@ export default {
           });
         generate.on("receipt", function() {
           self.loading = false;
-          swal("Success!", "You have successfully issued " + self.supply + " " + self.symbol + "s", "success")
+          swal(
+            "Success!",
+            "You have successfully issued " +
+              self.supply +
+              " " +
+              self.symbol +
+              "s",
+            "success"
+          );
           self.clear();
         });
         generate.on("error", function() {
           self.loading = false;
-          swal("Error", "Something went wrong. Please try again", "error")
+          swal("Error", "Something went wrong. Please try again", "error");
         });
       }
     },

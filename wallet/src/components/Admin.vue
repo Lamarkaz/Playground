@@ -38,7 +38,7 @@
                 <v-btn @click="clear">Clear</v-btn>
             </v-form>
             <h3>Whitelist</h3>
-            <p class="name" v-for="name in $store.state.namesArr">
+            <p class="name" v-for="name in $store.state.namesArr" :key="name">
                 {{name}}
                 <v-btn @click="remove(name)">Remove</v-btn>
             </p>

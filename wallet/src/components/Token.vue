@@ -55,7 +55,7 @@ import { BigNumber } from "bignumber.js";
 import Send from "./Send.vue";
 import orderBy from "lodash.orderby";
 import numeral from "numeral";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "home",
@@ -64,56 +64,66 @@ export default {
       token: {},
       balance: 0,
       txs: [],
-      sub:false,
-      interval:false
+      sub: false,
+      interval: false
     };
   },
-  methods:{
-    getToken:function(){
-    this.token = {}
-    this.txs = []
-    var self = this;
-    // Get token info
-    this.$contract.methods
-      .getToken(this.$route.params.symbol)
-      .call({ from: this.$store.state.wallet.address })
-      .then(function(result) {
-        self.balance = new BigNumber(result.balance)
-          .div(10 ** result.decimals)
-          .toString(10);
-        delete result.balance;
-        result.symbol = self.$route.params.symbol;
-        self.token = result;
-        if(self.sub != false){
-          self.sub.unsubscribe();
-        }
-        // Subscribe to txs
-        self.sub = self.$contract.events.Transfer(
-          {
-            filter: [
-              { sender: self.$store.state.wallet.address },
-              { recipient: self.$store.state.wallet.address }
-            ],
-            fromBlock: 0
-          },
-          function(err, event) {
-            if (event.returnValues.symbol === self.$route.params.symbol && (event.returnValues.sender === self.$store.state.wallet.address || event.returnValues.recipient === self.$store.state.wallet.address)) {
-              self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
-                var tx = {
-                  hash: event.transactionHash,
-                  symbol: event.returnValues.symbol,
-                  sender: event.returnValues.sender,
-                  recipient: event.returnValues.recipient,
-                  blockNumber: event.blockNumber,
-                  unixTimestamp: block.timestamp,
-                  timestamp: self.$dayjs(block.timestamp * 1000)
-                    .startOf("second")
-                    .fromNow(),
-                  value: new BigNumber(event.returnValues.value)
-                    .div(10 ** self.token.decimals)
-                    .toString(10)
-                };
-                self.txs.push(tx);
+  methods: {
+    getToken: function() {
+      this.token = {};
+      this.txs = [];
+      var self = this;
+      // Get token info
+      this.$contract.methods
+        .getToken(this.$route.params.symbol)
+        .call({ from: this.$store.state.wallet.address })
+        .then(function(result) {
+          self.balance = new BigNumber(result.balance)
+            .div(10 ** result.decimals)
+            .toString(10);
+          delete result.balance;
+          result.symbol = self.$route.params.symbol;
+          self.token = result;
+          if (self.sub != false) {
+            self.sub.unsubscribe();
+          }
+          // Subscribe to txs
+          self.sub = self.$contract.events.Transfer(
+            {
+              filter: [
+                { sender: self.$store.state.wallet.address },
+                { recipient: self.$store.state.wallet.address }
+              ],
+              fromBlock: 0
+            },
+            function(err, event) {
+              if (
+                event.returnValues.symbol === self.$route.params.symbol &&
+                (event.returnValues.sender ===
+                  self.$store.state.wallet.address ||
+                  event.returnValues.recipient ===
+                    self.$store.state.wallet.address)
+              ) {
+                self.$web3.eth.getBlock(event.blockNumber, function(
+                  err,
+                  block
+                ) {
+                  var tx = {
+                    hash: event.transactionHash,
+                    symbol: event.returnValues.symbol,
+                    sender: event.returnValues.sender,
+                    recipient: event.returnValues.recipient,
+                    blockNumber: event.blockNumber,
+                    unixTimestamp: block.timestamp,
+                    timestamp: self
+                      .$dayjs(block.timestamp * 1000)
+                      .startOf("second")
+                      .fromNow(),
+                    value: new BigNumber(event.returnValues.value)
+                      .div(10 ** self.token.decimals)
+                      .toString(10)
+                  };
+                  self.txs.push(tx);
                   // Update user token balance on each new transaction involving them
                   self.$contract.methods
                     .balanceOf(
@@ -126,48 +136,48 @@ export default {
                         .div(10 ** self.token.decimals)
                         .toString(10);
                     });
-              });
+                });
+              }
             }
+          );
+          if (self.interval != false) {
+            clearInterval(self.interval);
           }
-        );
-        if(self.interval != false) {
-          clearInterval(self.interval)
-        }
-        // Update tx relative time every minute
-        self.interval = setInterval(function() {
-          var newArr = [];
-          for (var i = 0; i < self.txs.length; i++) {
-            var tx = self.txs[i];
-            tx.timestamp = self.$dayjs(tx.unixTimestamp * 1000)
-              .startOf("second")
-              .fromNow();
-            newArr.push(tx);
-          }
-          self.txs = newArr;
-        }, 60000);
-      });
+          // Update tx relative time every minute
+          self.interval = setInterval(function() {
+            var newArr = [];
+            for (var i = 0; i < self.txs.length; i++) {
+              var tx = self.txs[i];
+              tx.timestamp = self
+                .$dayjs(tx.unixTimestamp * 1000)
+                .startOf("second")
+                .fromNow();
+              newArr.push(tx);
+            }
+            self.txs = newArr;
+          }, 60000);
+        });
     }
   },
   created() {
     var self = this;
-    this.$web3.eth.net.isListening().then(function(){
-      self.getToken()
-    })
+    this.$web3.eth.net.isListening().then(function() {
+      self.getToken();
+    });
   },
   computed: {
     ...mapGetters([
-      'getName'
+      "getName"
       // ...
     ]),
     orderedTxs: function() {
       return orderBy(this.txs, ["blockNumber"], ["desc", "asc"]);
     },
     prettyBalance: function() {
-      if(this.balance > 1){
-        return numeral(this.balance).format('0a');
-      }
-      else {
-        return numeral(this.balance).format('0.00a');
+      if (this.balance > 1) {
+        return numeral(this.balance).format("0a");
+      } else {
+        return numeral(this.balance).format("0.00a");
       }
     }
   },
@@ -175,8 +185,8 @@ export default {
     Send
   },
   watch: {
-    '$route.params.symbol':function() {
-      this.getToken()
+    "$route.params.symbol": function() {
+      this.getToken();
     }
   }
 };

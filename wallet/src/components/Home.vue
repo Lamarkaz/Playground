@@ -29,8 +29,8 @@
 import Create from "./Create.vue";
 import { BigNumber } from "bignumber.js";
 import orderBy from "lodash.orderby";
-import numeral from 'numeral';
-import { mapGetters } from 'vuex'
+import numeral from "numeral";
+import { mapGetters } from "vuex";
 
 export default {
   name: "home",
@@ -44,42 +44,59 @@ export default {
       return "/#/token/" + symbol;
     },
     realBalance: function(balance, decimals) {
-      if(BigNumber(balance).div(10 ** decimals).gt(1)) {
-        return new numeral(BigNumber(balance).div(10 ** decimals).toString(10)).format('0a');
-      }
-      else {
-        return new numeral(BigNumber(balance).div(10 ** decimals).toString(10)).format('0.000a');
+      if (
+        BigNumber(balance)
+          .div(10 ** decimals)
+          .gt(1)
+      ) {
+        return new numeral(
+          BigNumber(balance)
+            .div(10 ** decimals)
+            .toString(10)
+        ).format("0a");
+      } else {
+        return new numeral(
+          BigNumber(balance)
+            .div(10 ** decimals)
+            .toString(10)
+        ).format("0.000a");
       }
     },
     uglyBal: function(balance, decimals) {
-      return new BigNumber(balance).div(10 ** decimals).toNumber()
+      return new BigNumber(balance).div(10 ** decimals).toNumber();
     }
   },
   computed: {
     ...mapGetters([
-      'getName'
+      "getName"
       // ...
     ]),
     orderedTokens: function() {
       var arr = [];
-      for (var i = 0; i < this.tokens.length; i++){
+      for (var i = 0; i < this.tokens.length; i++) {
         var token = this.tokens[i];
-        token.uglyBalance = new BigNumber(token.balance).div(10 ** token.decimals).toNumber()
-        arr.push(token)
+        token.uglyBalance = new BigNumber(token.balance)
+          .div(10 ** token.decimals)
+          .toNumber();
+        arr.push(token);
       }
       return orderBy(this.tokens, ["uglyBalance"], ["desc", "asc"]);
     },
     tokenChart: function() {
       var arr = [];
-      for(var i = 0; i<this.tokens.length; i++){
-        if(this.tokens[i].balance && this.tokens[i].balance > 0){
-          var token = []
+      for (var i = 0; i < this.tokens.length; i++) {
+        if (this.tokens[i].balance && this.tokens[i].balance > 0) {
+          var token = [];
           token.push(this.tokens[i].symbol);
-          token.push(new BigNumber(this.tokens[i].balance).div(10 ** this.tokens[i].decimals))
-          arr.push(token)
+          token.push(
+            new BigNumber(this.tokens[i].balance).div(
+              10 ** this.tokens[i].decimals
+            )
+          );
+          arr.push(token);
         }
       }
-      return arr
+      return arr;
     }
   },
   components: {
@@ -88,20 +105,22 @@ export default {
   created() {
     var self = this;
     // Get all tokens
-    this.$web3.eth.net.isListening().then(function(){self.$contract.events.NewToken({ fromBlock: 0 }, function(err, event) {
-      if (
-        // Reject tokens with symbols that are not 100% uppercase. This frontend validation helps keep unique symbols.
-        event.returnValues.symbol === event.returnValues.symbol.toUpperCase()
-      ) {
-        self.$contract.methods
-          .getToken(event.returnValues.symbol)
-          .call({ from: self.$store.state.wallet.address })
-          .then(function(result) {
+    this.$web3.eth.net.isListening().then(function() {
+      self.$contract.events.NewToken({ fromBlock: 0 }, function(err, event) {
+        if (
+          // Reject tokens with symbols that are not 100% uppercase. This frontend validation helps keep unique symbols.
+          event.returnValues.symbol === event.returnValues.symbol.toUpperCase()
+        ) {
+          self.$contract.methods
+            .getToken(event.returnValues.symbol)
+            .call({ from: self.$store.state.wallet.address })
+            .then(function(result) {
               result.symbol = event.returnValues.symbol;
               self.tokens.push(result);
-          });
-      }
-    })});
+            });
+        }
+      });
+    });
   }
 };
 </script>
@@ -123,23 +142,22 @@ export default {
   background-color: #eee;
   cursor: pointer;
 }
-@keyframes bounceIn{
-  0%{
+@keyframes bounceIn {
+  0% {
     opacity: 0;
-    transform: scale(0.3) translate3d(0,0,0);
+    transform: scale(0.3) translate3d(0, 0, 0);
   }
-  50%{
+  50% {
     opacity: 0.9;
     transform: scale(1.1);
   }
-  80%{
+  80% {
     opacity: 1;
     transform: scale(0.89);
   }
-  100%{
+  100% {
     opacity: 1;
-    transform: scale(1) translate3d(0,0,0);
+    transform: scale(1) translate3d(0, 0, 0);
   }
 }
 </style>
-

@@ -53,36 +53,32 @@
 </template>
 
 <script>
-import md5 from 'js-md5'
+import md5 from "js-md5";
 
 export default {
   data: () => ({
-    dropdownBtns: [
-      { title: 'Copy Address' },
-      { title: 'Logout' }
-    ],
+    dropdownBtns: [{ title: "Copy Address" }, { title: "Logout" }]
   }),
   computed: {
-    gravatarHash: function () {
-      return md5(this.$store.state.wallet.address)
+    gravatarHash: function() {
+      return md5(this.$store.state.wallet.address);
     },
-    homeIcon: function () {
-      if(this.$store.state.showNotifications) {
-        return 'white'
-      }else{
-        return 'yellow darken-2'
+    homeIcon: function() {
+      if (this.$store.state.showNotifications) {
+        return "white";
+      } else {
+        return "yellow darken-2";
       }
     },
-    notifyIcon: function () {
-      if(this.$store.state.showNotifications) {
-        return 'yellow darken-2'
-      }
-      else {
-        return 'white'
+    notifyIcon: function() {
+      if (this.$store.state.showNotifications) {
+        return "yellow darken-2";
+      } else {
+        return "white";
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -42,9 +42,9 @@
   </v-container>
 </template>
 <script scoped>
-import orderBy from 'lodash.orderby';
+import orderBy from "lodash.orderby";
 import { BigNumber } from "bignumber.js";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -58,111 +58,120 @@ export default {
       events: []
     };
   },
-  computed:{
-      ...mapGetters([
-      'getName'
+  computed: {
+    ...mapGetters([
+      "getName"
       // ...
-      ]),
-      orderedEvents:function(){
-        return orderBy(this.events, ["blockNumber"], ["desc", "asc"]);
-      }
+    ]),
+    orderedEvents: function() {
+      return orderBy(this.events, ["blockNumber"], ["desc", "asc"]);
+    }
   },
   created() {
     var self = this;
-    this.$web3.eth.net.isListening().then(function(){
-    if(!self.onlyUser){
-      self.$whitelistContract.events.Whitelisted({fromBlock: 0}, function(err, event) {
-            if (!err) {
+    this.$web3.eth.net.isListening().then(function() {
+      if (!self.onlyUser) {
+        self.$whitelistContract.events.Whitelisted({ fromBlock: 0 }, function(
+          err,
+          event
+        ) {
+          if (!err) {
+            self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
+              var newEvent = {
+                type: "whitelist",
+                user: event.returnValues.user,
+                name: event.returnValues.name,
+                unixTimestamp: block.timestamp,
+                blockNumber: event.blockNumber,
+                timestamp: self
+                  .$dayjs(block.timestamp * 1000)
+                  .startOf("second")
+                  .fromNow()
+              };
+              if (newEvent.timestamp === "a few seconds ago") {
+                self.$store.commit("NOTIFY");
+              }
+              if (newEvent.timestamp === "a few seconds ago") {
+                newEvent.background = "background:#ffc6c6";
+              } else {
+                newEvent.background = "background:white";
+              }
+              self.events.push(newEvent);
+            });
+          }
+        });
+      }
+      var options = {
+        fromBlock: 0
+      };
+      if (self.onlyUser) {
+        options.filter = [
+          { sender: self.$store.state.wallet.address },
+          { recipient: self.$store.state.wallet.address }
+        ];
+      }
+      self.$contract.events.Transfer(options, function(err, event) {
+        if (
+          !err &&
+          (event.returnValues.sender === self.$store.state.wallet.address ||
+            event.returnValues.recipient === self.$store.state.wallet.address)
+        ) {
           self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
-                var newEvent = {
-                  type: "whitelist",
-                  user: event.returnValues.user,
-                  name: event.returnValues.name,
-                  unixTimestamp: block.timestamp,
+            self.$contract.methods
+              .getToken(event.returnValues.symbol)
+              .call({ from: self.$store.state.wallet.address })
+              .then(function(result) {
+                var tx = {
+                  type: "transfer",
+                  hash: event.transactionHash,
+                  symbol: event.returnValues.symbol,
+                  sender: event.returnValues.sender,
+                  recipient: event.returnValues.recipient,
                   blockNumber: event.blockNumber,
-                  timestamp: self.$dayjs(block.timestamp * 1000)
+                  unixTimestamp: block.timestamp,
+                  timestamp: self
+                    .$dayjs(block.timestamp * 1000)
                     .startOf("second")
-                    .fromNow()
+                    .fromNow(),
+                  value: new BigNumber(event.returnValues.value)
+                    .div(10 ** parseInt(result.decimals))
+                    .toString(10)
                 };
-                if(newEvent.timestamp === "a few seconds ago") {
-                  self.$store.commit('NOTIFY')
+                if (tx.timestamp === "a few seconds ago") {
+                  self.$store.commit("NOTIFY");
                 }
-                if(newEvent.timestamp === "a few seconds ago") {
-                  newEvent.background = 'background:#ffc6c6'
+                if (tx.timestamp === "a few seconds ago") {
+                  tx.background = "background:#ffc6c6";
                 } else {
-                  newEvent.background = 'background:white'
+                  tx.background = "background:white";
                 }
-                self.events.push(newEvent);
-          })
+                self.events.push(tx);
+              });
+          });
+        } else {
+          console.log("ERROR: ", err);
         }
       });
-    }
-    var options = {
-      fromBlock:0
-    };
-    if(self.onlyUser) {
-      options.filter = [
-        { sender: self.$store.state.wallet.address },
-        { recipient: self.$store.state.wallet.address }
-      ]
-    }
-    self.$contract.events.Transfer(options, function(err, event) {
-      if (!err && (event.returnValues.sender === self.$store.state.wallet.address || event.returnValues.recipient === self.$store.state.wallet.address)) {
-        self.$web3.eth.getBlock(event.blockNumber, function(err, block) {
-          self.$contract.methods
-            .getToken(event.returnValues.symbol)
-            .call({from:  self.$store.state.wallet.address})
-            .then(function(result) {
-              var tx = {
-                type: "transfer",
-                hash: event.transactionHash,
-                symbol: event.returnValues.symbol,
-                sender: event.returnValues.sender,
-                recipient: event.returnValues.recipient,
-                blockNumber: event.blockNumber,
-                unixTimestamp: block.timestamp,
-                timestamp: self.$dayjs(block.timestamp * 1000)
-                  .startOf("second")
-                  .fromNow(),
-                value: new BigNumber(event.returnValues.value)
-                  .div(10 ** parseInt(result.decimals))
-                  .toString(10)
-              };
-              if(tx.timestamp === "a few seconds ago") {
-                self.$store.commit('NOTIFY')
-              }
-              if(tx.timestamp === "a few seconds ago") {
-                tx.background = 'background:#ffc6c6'
-              } else {
-                tx.background = 'background:white'
-              }
-            self.events.push(tx);
 
-            })
-        });
-      } else {
-        console.log("ERROR: ", err);
-      }
-    });
-
-    // Update event timestamp every minute
-    setInterval(function() {
+      // Update event timestamp every minute
+      setInterval(function() {
         var newArr = [];
         for (var i = 0; i < self.events.length; i++) {
-        var event = self.events[i];
-        event.timestamp = self.$dayjs(event.unixTimestamp * 1000)
+          var event = self.events[i];
+          event.timestamp = self
+            .$dayjs(event.unixTimestamp * 1000)
             .startOf("second")
             .fromNow();
-        if(event.timestamp === "a few seconds ago") {
-          event.background = 'background:#ffc6c6'
-        } else {
-          event.background = 'background:white'
-        }
-        newArr.push(event);
+          if (event.timestamp === "a few seconds ago") {
+            event.background = "background:#ffc6c6";
+          } else {
+            event.background = "background:white";
+          }
+          newArr.push(event);
         }
         self.events = newArr;
-    }, 60000);
-    })
+      }, 60000);
+    });
   }
 };
 </script>
@@ -173,4 +182,3 @@ export default {
   margin-right: 5px;
 }
 </style>
-
